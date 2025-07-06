@@ -1,0 +1,69 @@
+name: flapp_widget
+description: Fluwid
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.2 <4.0.0'
+
+dependencies:
+  flutter_localizations:
+    sdk: flutter
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  url_strategy: ^0.2.0
+  json_serializable: ^6.7.1
+  json_annotation: ^4.8.1
+  flutter_riverpod: ^2.4.5
+  http: ^1.1.0
+  intl: ^0.20.2
+  convex_hull: ^1.1.2
+  render_metrics: ^2.0.2
+  shared_preferences: ^2.2.2
+  url_launcher: ^6.2.1
+  flutter_timer_countdown: ^1.0.7
+  universal_html: ^2.2.4
+  flutter_svg: ^2.0.9
+  flutter_animate: ^4.5.0
+  web: ^0.5.1
+  ticket_clippers: ^0.0.8
+  uuid: ^4.4.0
+  wave_divider: ^0.0.3
+  scrollable_positioned_list: ^0.3.8
+  clipboard: ^0.1.3
+  jovial_svg: ^1.1.25
+  xml: ^6.5.0
+  animations: ^2.0.11
+  shimmer: ^3.0.0
+  pin_code_fields: ^8.0.1
+  dotted_line: ^3.2.3
+  coupon_uikit: ^0.2.1
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  build_runner: ^2.4.6
+  custom_lint:
+  riverpod_lint: ^2.3.3
+
+
+flutter:
+  generate: true
+  uses-material-design: true
+  shaders:
+    - shaders/shader.frag
+
+  assets:
+    - images/
+
+  fonts:
+    - family: RobotoCondensedLight
+      fonts:
+        - asset: fonts/VKSansDisplay-Regular.ttf
+    - family: RobotoCondensedRegular
+      fonts:
+        - asset: fonts/VKSansDisplay-Regular.ttf
