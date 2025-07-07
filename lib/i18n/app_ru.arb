@@ -46,7 +46,7 @@
   "setAnotherEmail" : "Сменить почту",
   "emailMessage": "Email задан неверно",
   "emailMessage1": "Email уже задан",
-  "emailMessage2": "Необходимо подтвердить Email",
+  "emailMessage2": "Пользователь не авторизован",
   "emailSuccess" : "Email успешно подтвержден",
   "codeMessage": "Проверочный код задан неверно",
   "hint1": "*Входные билеты бронируются при переходе в корзину",

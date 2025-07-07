@@ -12,6 +12,10 @@ final asyncActionProvider = AsyncNotifierProvider<AVMState, ActionViewModel>(() 
 
 class ActionRepository{
   Future<ActionViewModel> getActionViewModel() async{
+    //Логика получения фида и токена
+    fid = 1271;
+    token = '7c696b4af364928202dd';
+
     final action = await ActionAPI.fetchAction();
     late Venue preferredVenue;
     late ActionEvent preferredActionEvent;

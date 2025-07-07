@@ -322,7 +322,7 @@ class _Header extends ConsumerWidget {
       spacing: 16,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        ConstrainedBox(
+        /*ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 800, minWidth: 800),
           child: Container(
             decoration: const BoxDecoration(
@@ -429,7 +429,7 @@ class _Header extends ConsumerWidget {
               ),
             ),
           ),
-        ),
+        ),*/
         /*ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 800, minWidth: 800),
           child: Container(
@@ -487,7 +487,7 @@ class _MobileHeader extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               controller: sc,
               children: [
-                const SizedBox(height: 8,),
+                /*const SizedBox(height: 8,),
                 Card(
                   color: Colors.white, margin: const EdgeInsets.all(0),
                   child: Padding(
@@ -547,7 +547,7 @@ class _MobileHeader extends ConsumerWidget {
                       child: AuthorisationArea(),
                     ),
                   ),
-                ),
+                ),*/
                 if (aEvent.schemeType == SchemeType.assignedSeats ||
                     aEvent.schemeType == SchemeType.mixed)
                   Padding(
@@ -557,6 +557,7 @@ class _MobileHeader extends ConsumerWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           spacing: 32,
                           children: [
@@ -596,7 +597,7 @@ class _MobileHeader extends ConsumerWidget {
                         ],
                       ),
                     ),
-                                    ),
+                    ),
                   ),
                 const SizedBox(height: 8,),
                 if (aEvent.categoryLimitList.isNotEmpty) Card(

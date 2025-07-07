@@ -33,12 +33,22 @@ class UserState extends AsyncNotifier<User>{
       }
     }
 
-    // Если пользователя нет в репо, получаем его. В данном случае из файла constants.dart
+    // Если пользователя нет в localStorage получаем его из post msg?
     if (loadedUserFromRepo.userId == 0 && loadedUserFromRepo.sessionId != ''){
-      
-      tempUser = User(userId: 0, sessionId: loadedUserFromRepo.sessionId,
-          email: loadedUserFromRepo.email, state: UserStates.processing, totalSeatsInReserve: 0);
+      //захардкоденный пользователь
+      int uid = 33922;
+      String sid = '7c696b4af364928202dd';
+      User hardCodedUser = User(
+          totalSeatsInReserve: 0,
+          userId: uid,
+          sessionId: sid, email: '',
+          state: UserStates.unknown);
+      seatsInReserve = await UserAPI.getUserInfo(hardCodedUser);
+
+      tempUser = User(userId: hardCodedUser.userId, sessionId: hardCodedUser.sessionId,
+          email: '', state: UserStates.authorized, totalSeatsInReserve: seatsInReserve);
     }
+
     return tempUser;
   }
 
@@ -62,7 +72,7 @@ class UserState extends AsyncNotifier<User>{
     userRepo.saveUser(synthUser);
     state = AsyncValue.data(state.value!.copyWith(userId: synthUser.userId,
         sessionId: synthUser.sessionId, email: synthUser.email, state: synthUser.state),);
-  }//убрть
+  }//убрать
 
   clearUser(){
     UserRepository userRepo = UserRepository();

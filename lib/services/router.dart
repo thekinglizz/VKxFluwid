@@ -8,11 +8,13 @@ import '../ui/screens/error_screen.dart';
 
 setGlobalUriParams(Uri url){
   //Обязательные параметры
-  fid = url.queryParameters['frontendId'];
-  token = url.queryParameters['token'];
+  //fid = url.queryParameters['frontendId'];
+  //token = url.queryParameters['token'];
   actionId = url.queryParameters['id'];
   actionEventId = url.queryParameters['actionEventId'];
   cityId = url.queryParameters['cityId'];
+
+
   agreement = url.queryParameters['agr'];
   failUrl = url.queryParameters['fail'] ?? '${Uri.base.origin}${Uri.base.path}?fail';
   successUrl = url.queryParameters['success'] ?? '${Uri.base.origin}${Uri.base.path}?success'; //? в конце

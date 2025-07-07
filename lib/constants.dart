@@ -13,10 +13,6 @@ import 'theme.dart';
 
 String version = 'v3.7.8';
 
-//захардкоденный пользователь
-int uid = 33922;
-String sid = '7c696b4af364928202dd';
-
 enum SchemeType {generalAdmission, assignedSeats, mixed, undefined}
 
 late FragmentProgram fragmentProgram;

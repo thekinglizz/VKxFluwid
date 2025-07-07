@@ -21,12 +21,10 @@ class UserRepository{
   }
 
   Future<void> deleteUser() async {
-    //SharedPreferences preferences = await SharedPreferences.getInstance();
     (await sharedPreferences).clear();
   }
 
   Future<void> deleteEmail() async {
-    //SharedPreferences preferences = await SharedPreferences.getInstance();
     (await sharedPreferences).remove('email');
   }
 

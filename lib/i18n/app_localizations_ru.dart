@@ -152,7 +152,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get emailMessage1 => 'Email уже задан';
 
   @override
-  String get emailMessage2 => 'Необходимо подтвердить Email';
+  String get emailMessage2 => 'Пользователь не авторизован';
 
   @override
   String get emailSuccess => 'Email успешно подтвержден';
