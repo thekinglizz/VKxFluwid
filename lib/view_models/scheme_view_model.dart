@@ -23,6 +23,10 @@ class SchemeRepository {
     final AssignedSeatsProcessor schemeData = await ActionAPI.computeSchemeData(
         avm.selectedActionEvent!.actionEventId,
         avm.selectedActionEvent!.placementUrl!);
+
+    // send post message after scheme is loaded
+    PostMessageService.loadedEvent();
+
     schemeData.getSectorScaffoldList();
     //определяем уже выбранные места пользователя
     List<Seat> sList = [];
@@ -44,9 +48,6 @@ class SchemeRepository {
         selectedSeats: sList,
         categoryPriceFilter: null,
         selectedTariffSeats: {});
-
-    // send post message
-    PostMessageService.loadedEvent();
 
     return svm;
   }

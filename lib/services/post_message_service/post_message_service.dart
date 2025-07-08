@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:js_interop';
 
+import 'package:flapp_widget/services/post_message_service/post_message_order_dto.dart';
+
 @JS('sendMessageFromDart')
 external void _postMessage(JSString message, JSString origin);
 
@@ -11,7 +13,7 @@ class PostMessageService {
     const eventName = "PartnerWidget__loaded";
 
     _postMessage(
-      jsonEncode({eventName: eventName}).toJS,
+      jsonEncode({"eventName": eventName}).toJS,
       targetOrigin.toJS,
     );
   }
@@ -20,16 +22,16 @@ class PostMessageService {
     const eventName = "PartnerWidget_Close";
 
     _postMessage(
-      '{ eventName: "$eventName" }'.toJS,
+      jsonEncode({"eventName": eventName}).toJS,
       targetOrigin.toJS,
     );
   }
 
-  static void purchasedEvent({required Object order}) {
+  static void purchasedEvent({required PostMessageOrderDto order}) {
     const eventName = "PartnerWidget__purchased";
 
     _postMessage(
-      '{ eventName: "$eventName" }'.toJS,
+      jsonEncode({"eventName": eventName, order: order.toJson()}).toJS,
       targetOrigin.toJS,
     );
   }
