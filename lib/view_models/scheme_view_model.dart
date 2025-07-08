@@ -35,8 +35,15 @@ class SchemeRepository{
         }
       }
     }
-    final svm = SchemeViewModel(schemeData: schemeData, selectedSeats: sList,
-        categoryPriceFilter: null, selectedTariffSeats: {});
+    final svm = SchemeViewModel(
+        schemeData: schemeData,
+        selectedSeats: sList,
+        categoryPriceFilter: null,
+        selectedTariffSeats: {});
+
+    // send post message
+    PostMessageService.loadedEvent();
+
     return svm;
   }
 }

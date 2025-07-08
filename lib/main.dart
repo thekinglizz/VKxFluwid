@@ -1,4 +1,5 @@
 
+import 'package:flapp_widget/services/post_message_service/post_message_service.dart';
 import 'package:flapp_widget/ui/screens/acton_mode_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +13,10 @@ void main() async {
   //fragmentProgram = await FragmentProgram.fromAsset('shaders/shader.frag');
   WidgetsFlutterBinding.ensureInitialized(); // Обязательно для использования rootBundle
   setPathUrlStrategy();
+
+  // Post Message service
+  PostMessageService.targetOrigin = "http://localhost:9000";
+
   findSystemLocale().then((value) {
     Intl.defaultLocale = value;
     if (Uri.base.queryParameters['lng'] != null) {
