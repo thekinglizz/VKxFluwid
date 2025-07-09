@@ -3,5 +3,10 @@
 
 // Partner widget methods
 window.sendMessageFromDart = function (message, origin) {
-    window.parent.postMessage(message, origin);
+    try {
+        window.parent.postMessage(JSON.parse(message), origin);
+        return;
+    } catch (error) {
+        console.log('Error on postMessage:\n', error);
+    }
 };
