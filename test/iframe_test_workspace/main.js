@@ -9,3 +9,12 @@ window.addEventListener('message', (event) => {
     msgElem.textContent = `Received: ${JSON.stringify(event.data)}`;
     logDiv.appendChild(msgElem);
 });
+
+document.getElementById('sendBtn').addEventListener('click', function () {
+    const message = {
+        id: "1234567890",
+        email: "example@test.com"
+    };
+    const iframe = document.getElementById('VKxFluwid-Frame');
+    iframe.contentWindow.postMessage(message, "http://localhost:5000");
+});

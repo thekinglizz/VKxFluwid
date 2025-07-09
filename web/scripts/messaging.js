@@ -1,5 +1,9 @@
 // Listen for messages from the parent window (when running in an iframe)
-// window.addEventListener('message', handleParentMessage);
+window.addEventListener("message", function (event) {
+    if (window.postMessageFromJS) {
+        window.postMessageFromJS(event.data, event.origin);
+    }
+});
 
 // Partner widget methods
 window.sendMessageFromDart = function (message, origin) {

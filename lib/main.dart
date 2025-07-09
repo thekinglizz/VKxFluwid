@@ -15,7 +15,7 @@ void main() async {
   setPathUrlStrategy();
 
   // Post Message service
-  PostMessageService.targetOrigin = "http://localhost:9000";
+  PostMessageService.serviceInit(origin: "http://localhost:9000");
 
   findSystemLocale().then((value) {
     Intl.defaultLocale = value;
