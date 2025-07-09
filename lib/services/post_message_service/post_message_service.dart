@@ -24,7 +24,15 @@ class PostMessageService {
   // init service, set origin and start listen messages
   static serviceInit({required String origin}) {
     targetOrigin = origin;
+
+    // Link _messageListener to JS method
     _postMessageFromJS = _messageListener.toJS;
+
+    // Listen kill app action
+    web.window.addEventListener(
+      'unload',
+      PostMessageService.closeEvent.toJS,
+    );
   }
 
   // Perform listened message from js
