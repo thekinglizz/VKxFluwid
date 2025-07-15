@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flapp_widget/services/post_message_service/post_message_events.dart';
 import 'package:flapp_widget/services/post_message_service/post_message_service.dart';
 import 'package:flapp_widget/view_models/user_view_model.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +24,6 @@ class SchemeRepository {
     final AssignedSeatsProcessor schemeData = await ActionAPI.computeSchemeData(
         avm.selectedActionEvent!.actionEventId,
         avm.selectedActionEvent!.placementUrl!);
-
-    // send post message after scheme is loaded
-    PostMessageService.loadedEvent();
 
     schemeData.getSectorScaffoldList();
     //определяем уже выбранные места пользователя
@@ -89,7 +87,12 @@ class SVMState extends AsyncNotifier<SchemeViewModel> {
   @override
   Future<SchemeViewModel> build() {
     final action = ref.watch(asyncActionProvider).value;
-    return SchemeRepository().getSchemeViewModel(action as ActionViewModel);
+    return SchemeRepository()
+        .getSchemeViewModel(action as ActionViewModel)
+        .then((_) {
+      ref.read(postMessageProvider).post(PostMessageLoadedEvent());
+      return _;
+    });
   }
 
   Future<dynamic> reserveSeat(

@@ -11,6 +11,7 @@ import '../../view_models/user_view_model.dart';
 
 class PaymentScreen extends ConsumerStatefulWidget {
   const PaymentScreen(this.reqFieldsData, {super.key});
+  // TODO dynamic to order details object
   final List<dynamic> reqFieldsData;
 
   @override

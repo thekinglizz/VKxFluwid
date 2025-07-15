@@ -1,73 +1,42 @@
-import 'dart:convert';
 import 'dart:js_interop';
+import 'package:flapp_widget/services/post_message_service/post_message_events.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:web/web.dart' as web;
 
-import 'package:flapp_widget/services/post_message_service/post_message_order_dto.dart';
-
-// Send post message
-@JS('sendMessageFromDart')
-external void _postMessage(JSString message, JSString origin);
-
-// Receiver of post message
-@JS('postMessageFromJS')
+//JS Methods
+@JS('postMessageFromJS') // Receiver of post message
 external set _postMessageFromJS(JSFunction func);
 
-// Message converter to post message service function
-void _messageListener(JSAny data, JSString origin) =>
-    PostMessageService.handleMessage(data.dartify(), origin.toDart);
+@JS('sendMessageFromDart') // Send post message
+external void _postMessage(JSString message, JSString origin);
 
-// Post Messagees Service class
+// Global Provider
+final postMessageProvider = Provider<PostMessageService>((ref) {
+  throw UnimplementedError('Post Message Provider is not initialized!');
+});
+
 class PostMessageService {
-  // Target origin (origin of parent window, where flutter is iframe)
-  static late final String targetOrigin;
+  final String _targetOrigin;
 
-  // init service, set origin and start listen messages
-  static serviceInit({required String origin}) {
-    targetOrigin = origin;
-
-    // Link _messageListener to JS method
-    _postMessageFromJS = _messageListener.toJS;
+  PostMessageService({required String targetOrigin})
+      : _targetOrigin = targetOrigin {
+    // link _messageListener to JS method
+    _postMessageFromJS = _onMessageReceived.toJS;
 
     // Listen kill app action
-    web.window.addEventListener(
-      'unload',
-      PostMessageService.closeEvent.toJS,
-    );
+    web.window.addEventListener('pagehide', _closeEvent.toJS);
   }
 
-  // Perform listened message from js
-  static handleMessage(dynamic data, String origin) {
-    if (origin != targetOrigin) return;
+  void post(PostMessageEvent event) =>
+      _postMessage(event.message.toJS, _targetOrigin.toJS);
 
-    // Hangle message
-    web.window.alert("From $origin reveived message: ${data["id"]}");
+  void _onMessageReceived(JSAny data, JSString origin) {
+    if (origin.toDart != _targetOrigin) return;
+
+    final result = data.dartify();
+
+    web.window.alert("From $origin reveived message: $result");
   }
 
-  // Post Message ACTIONS
-  static void loadedEvent() {
-    const eventName = "PartnerWidget__loaded";
-
-    _postMessage(
-      jsonEncode({"eventName": eventName}).toJS,
-      targetOrigin.toJS,
-    );
-  }
-
-  static void closeEvent() {
-    const eventName = "PartnerWidget_Close";
-
-    _postMessage(
-      jsonEncode({"eventName": eventName}).toJS,
-      targetOrigin.toJS,
-    );
-  }
-
-  static void purchasedEvent({required PostMessageOrderDto order}) {
-    const eventName = "PartnerWidget__purchased";
-
-    _postMessage(
-      jsonEncode({"eventName": eventName, order: order.toJson()}).toJS,
-      targetOrigin.toJS,
-    );
-  }
+  void _closeEvent() => post(PostMessageCloseEvent());
 }

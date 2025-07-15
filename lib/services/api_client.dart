@@ -353,7 +353,8 @@ class CartAPI extends PlatformAPI{
       'command': 'CREATE_ORDER',
       'userId': user.userId,
       'sessionId': user.sessionId,
-      'successUrl': successUrl + '?' + zone,
+      // TODO return order information
+      'successUrl': successUrl + '?' + zone, // + guid (and save then to local storage)
       'failUrl': failUrl
     };
     if (reqFields.isNotEmpty){
