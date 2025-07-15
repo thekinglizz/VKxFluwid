@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:js_interop';
+import 'package:flapp_widget/services/post_message_service/dto/post_message_personalized_event.dart';
 import 'package:flapp_widget/services/post_message_service/post_message_events.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:web/web.dart' as web;
@@ -30,13 +32,38 @@ class PostMessageService {
   void post(PostMessageEvent event) =>
       _postMessage(event.message.toJS, _targetOrigin.toJS);
 
+  void _closeEvent() => post(PostMessageCloseEvent());
+
   void _onMessageReceived(JSAny data, JSString origin) {
     if (origin.toDart != _targetOrigin) return;
 
-    final result = data.dartify();
+    try {
+      final result = jsonDecode(jsonEncode(data.dartify()));
+      final event = PostMessageEventEnum.fromString(result['eventName']);
 
-    web.window.alert("From $origin reveived message: $result");
+      switch (event) {
+        case PostMessageEventEnum.personalized:
+          _onReceivePeronalizedEvent(
+            event: PostMessagePersonalizedEvent.fromJson(result),
+          );
+        case null:
+          throw Exception('Received uncorrect postMessage from origin');
+        default:
+          throw Exception('Received unexpected postMessage from origin');
+      }
+    } catch (error, stackTrace) {
+      print('$error, $stackTrace');
+    }
   }
 
-  void _closeEvent() => post(PostMessageCloseEvent());
+  // ON Recieved message
+  void _onReceivePeronalizedEvent({
+    required PostMessagePersonalizedEvent event,
+  }) {
+    web.window.alert(
+      "Received Personalized Event:\n"
+      "userExtra: ${event.extraUser}\n"
+      "widgetSettings: ${event.widgetSettings}",
+    );
+  }
 }
