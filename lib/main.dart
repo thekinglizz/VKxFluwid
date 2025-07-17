@@ -28,8 +28,11 @@ void main() async {
     runApp(ProviderScope(
       overrides: [
         // post message provider override for DEV entrypoint
-        postMessageProvider.overrideWithValue(
-          PostMessageService(targetOrigin: settings.parentOrigin),
+        postMessageProvider.overrideWith(
+          (ref) => PostMessageService(
+            targetOrigin: settings.parentOrigin,
+            ref: ref,
+          ),
         ),
       ],
       observers: const [],

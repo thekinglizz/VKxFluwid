@@ -28,7 +28,7 @@ class PostMessageWidgetSettings {
   PostMessageWidgetSettings({required this.needCloseButton});
 
   @JsonKey(name: 'need_close_button')
-  final bool needCloseButton;
+  final bool? needCloseButton;
 
   factory PostMessageWidgetSettings.fromJson(Map<String, dynamic> json) =>
       _$PostMessageWidgetSettingsFromJson(json);
@@ -38,19 +38,20 @@ class PostMessageWidgetSettings {
 
 @JsonSerializable()
 class PostMessageExtraUser {
-  PostMessageExtraUser(
-      {required this.name,
-      required this.email,
-      required this.phone,
-      required this.vkid,
-      required this.uuid});
+  PostMessageExtraUser({
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.vkid,
+    required this.uuid,
+  });
 
-  final String name;
-  final String email;
-  final String phone;
+  final String? name;
+  final String? email;
+  final String? phone;
   @JsonKey(name: 'vk_id')
-  final String vkid;
-  final String uuid;
+  final String? vkid;
+  final String? uuid;
 
   factory PostMessageExtraUser.fromJson(Map<String, dynamic> json) =>
       _$PostMessageExtraUserFromJson(json);

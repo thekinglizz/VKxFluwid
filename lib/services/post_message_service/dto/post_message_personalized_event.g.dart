@@ -27,7 +27,7 @@ Map<String, dynamic> _$PostMessagePersonalizedEventToJson(
 PostMessageWidgetSettings _$PostMessageWidgetSettingsFromJson(
         Map<String, dynamic> json) =>
     PostMessageWidgetSettings(
-      needCloseButton: json['need_close_button'] as bool,
+      needCloseButton: json['need_close_button'] as bool?,
     );
 
 Map<String, dynamic> _$PostMessageWidgetSettingsToJson(
@@ -39,11 +39,11 @@ Map<String, dynamic> _$PostMessageWidgetSettingsToJson(
 PostMessageExtraUser _$PostMessageExtraUserFromJson(
         Map<String, dynamic> json) =>
     PostMessageExtraUser(
-      name: json['name'] as String,
-      email: json['email'] as String,
-      phone: json['phone'] as String,
-      vkid: json['vk_id'] as String,
-      uuid: json['uuid'] as String,
+      name: json['name'] as String?,
+      email: json['email'] as String?,
+      phone: json['phone'] as String?,
+      vkid: json['vk_id'] as String?,
+      uuid: json['uuid'] as String?,
     );
 
 Map<String, dynamic> _$PostMessageExtraUserToJson(

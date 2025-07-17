@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:js_interop';
 import 'package:flapp_widget/services/post_message_service/dto/post_message_personalized_event.dart';
 import 'package:flapp_widget/services/post_message_service/post_message_events.dart';
+import 'package:flapp_widget/services/post_message_service/widget_settings_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:web/web.dart' as web;
 
@@ -18,10 +19,13 @@ final postMessageProvider = Provider<PostMessageService>((ref) {
 });
 
 class PostMessageService {
+  final Ref _ref;
   final String _targetOrigin;
 
-  PostMessageService({required String targetOrigin})
-      : _targetOrigin = targetOrigin {
+  PostMessageService({
+    required Ref ref,
+    required String targetOrigin,
+  })  : _targetOrigin = targetOrigin, _ref = ref {
     // link _messageListener to JS method
     _postMessageFromJS = _onMessageReceived.toJS;
 
@@ -53,6 +57,7 @@ class PostMessageService {
       }
     } catch (error, stackTrace) {
       print('$error, $stackTrace');
+      // TODO - handle error
     }
   }
 
@@ -64,6 +69,10 @@ class PostMessageService {
       "Received Personalized Event:\n"
       "userExtra: ${event.extraUser}\n"
       "widgetSettings: ${event.widgetSettings}",
+    );
+
+    _ref.read(widgetSettingsProvider.notifier).state = WidgetSettings(
+      needCloseButton: event.widgetSettings.needCloseButton ?? false,
     );
   }
 }
