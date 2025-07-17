@@ -30,13 +30,11 @@ class PostMessageService {
     _postMessageFromJS = _onMessageReceived.toJS;
 
     // Listen kill app action
-    web.window.addEventListener('pagehide', _closeEvent.toJS);
+    // web.window.addEventListener('pagehide', _closeEvent.toJS);
   }
 
   void post(PostMessageEvent event) =>
       _postMessage(event.message.toJS, _targetOrigin.toJS);
-
-  void _closeEvent() => post(PostMessageCloseEvent());
 
   void _onMessageReceived(JSAny data, JSString origin) {
     if (origin.toDart != _targetOrigin) return;

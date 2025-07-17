@@ -250,4 +250,14 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get createOrderError => 'Ошибка создания заказа';
+
+  @override
+  String get closeWidgetMessage =>
+      'Вы уверены, что хотите прервать покупку? Бронь с билетов будет снята.';
+
+  @override
+  String get closeWidgetYesButton => 'Да';
+
+  @override
+  String get closeWidgetNoButton => 'Нет';
 }

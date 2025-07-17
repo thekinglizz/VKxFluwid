@@ -1,3 +1,4 @@
+import 'package:flapp_widget/ui/widgets/action_mode_screen_widgets/close_widget_button.dart';
 import 'package:flapp_widget/view_models/ga_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -173,6 +174,7 @@ class _FluwidHomeState extends ConsumerState<FluwidHome> {
                       ),
                     ),
                   ),
+                  actions: const [CloseWidgetButton(),],
                 ) : null,
                 bottomNavigationBar: !isDesktop ? NavigationBar(
                   height: 50,

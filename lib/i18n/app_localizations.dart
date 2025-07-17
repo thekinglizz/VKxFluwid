@@ -577,6 +577,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create order error'**
   String get createOrderError;
+
+  /// No description provided for @closeWidgetMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel your purchase? The reservation will be cancelled.'**
+  String get closeWidgetMessage;
+
+  /// No description provided for @closeWidgetYesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get closeWidgetYesButton;
+
+  /// No description provided for @closeWidgetNoButton.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get closeWidgetNoButton;
 }
 
 class _AppLocalizationsDelegate

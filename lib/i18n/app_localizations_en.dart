@@ -253,4 +253,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get createOrderError => 'Create order error';
+
+  @override
+  String get closeWidgetMessage =>
+      'Are you sure you want to cancel your purchase? The reservation will be cancelled.';
+
+  @override
+  String get closeWidgetYesButton => 'Yes';
+
+  @override
+  String get closeWidgetNoButton => 'No';
 }

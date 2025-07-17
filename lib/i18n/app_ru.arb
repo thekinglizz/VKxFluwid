@@ -78,5 +78,8 @@
   "phoneError" : "Заполните поле Телефон",
   "promoHint" : "Поле для промо кодов не заполнено",
   "validMobileHint" : "Номер задан неверно",
-  "createOrderError" : "Ошибка создания заказа"
+  "createOrderError" : "Ошибка создания заказа",
+  "closeWidgetMessage" : "Вы уверены, что хотите прервать покупку? Бронь с билетов будет снята.",
+  "closeWidgetYesButton" : "Да",
+  "closeWidgetNoButton" : "Нет"
 }

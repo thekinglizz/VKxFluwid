@@ -78,5 +78,8 @@
   "phoneError" : "Please, enter your phone",
   "promoHint" : "Please, enter promo code",
   "validMobileHint" : "Phone number is incorrect",
-  "createOrderError" : "Create order error"
+  "createOrderError" : "Create order error",
+  "closeWidgetMessage" : "Are you sure you want to cancel your purchase? The reservation will be cancelled.",
+  "closeWidgetYesButton" : "Yes",
+  "closeWidgetNoButton" : "No"
 }
