@@ -1,5 +1,3 @@
-export const origin = "http://localhost:5000";
-
 export const peronalizedMessage = {
     "eventName": "PartnerWidget___personalized",
     "extra_user": {

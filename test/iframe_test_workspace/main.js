@@ -1,9 +1,10 @@
 import * as Consts from './scripts/consts.js';
+import * as Url from './scripts/url.js';
 
 // Listen for messages from the iframe
 window.addEventListener('message', (event) => {
     // For security, check the origin
-    if (event.origin !== Consts.origin) return;
+    if (event.origin !== Url.origin) return;
 
     // Display the message on the page
     const logDiv = document.getElementById('message-log');
@@ -15,7 +16,7 @@ window.addEventListener('message', (event) => {
 // Event on send 
 function sendEmailId() {
     const iframe = document.getElementById('VKxFluwid-Frame');
-    iframe.contentWindow.postMessage(Consts.peronalizedMessage, Consts.origin);
+    iframe.contentWindow.postMessage(Consts.peronalizedMessage, Url.origin);
 };
 
 // Open \ Close IFrame button
@@ -36,7 +37,7 @@ toggleBtn.addEventListener('click', () => {
         // Create iframe
         iframe = document.createElement('iframe');
         iframe.id = 'VKxFluwid-Frame';
-        iframe.src = `${Consts.origin}/?id=1333&actionEventId=7408&cityId=3&zone=test`;
+        iframe.src = Url.getUrl();
         iframe.width = '900';
         iframe.height = '600';
         iframe.style.marginTop = '10px';
