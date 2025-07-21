@@ -5,6 +5,7 @@ class AppLaunchData {
   AppLaunchData.dev() : parentOrigin = "http://localhost:9000";
 
   // Prod Settings
-  AppLaunchData.prod() : parentOrigin = "http://localhost:9000";
+  // TODO - change to real prod origin
+  AppLaunchData.prod() : parentOrigin = "http://example.com";
 }
 
