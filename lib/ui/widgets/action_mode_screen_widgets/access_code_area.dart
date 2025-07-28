@@ -51,7 +51,7 @@ class _AccessCodeInputState extends State<AccessCodeInput> {
                 onPressed: ()async{
                   if (accessCode > 0){
                     await ActionAPI.checkKDP(accessCode).then((value){
-                      if (value is bool){
+                      if (value == false){
                         if (context.mounted){
                           showDialog<String>(
                             context: context,

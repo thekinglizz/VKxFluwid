@@ -19,7 +19,7 @@ class PlatformAPI {
   }) async =>
       http.post(
         Uri.parse(port),
-        headers: <String, String>{
+        headers: {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode({
@@ -32,11 +32,11 @@ class PlatformAPI {
 }
 
 class ActionAPI extends PlatformAPI {
-  static Future<dynamic> chkConnection() async {
+  static Future<Action?> chkConnection() async {
     try {
       final chkResponse = await PlatformAPI.platformResponse(
         command: 'GET_ACTION_EXT',
-        body: <String, dynamic>{
+        body: {
           'cityId': cityId,
           'actionId': actionId,
         },
@@ -50,18 +50,20 @@ class ActionAPI extends PlatformAPI {
         }
         Action action =
             Action.fromJson((jsonResponse as Map<String, dynamic>)["action"]);
-        if (action.venueList.isEmpty) return "empty";
-        for (var venue in action.venueList) {
-          //удаляем пустые сеансы
-          if (venue.actionEventList
-              .any((element) => element.categoryLimitList.isNotEmpty)) {
-            venue.actionEventList.removeWhere((element) =>
-                element.categoryLimitList.isEmpty &&
-                element.placementUrl == null);
+        if (action.venueList.isNotEmpty) {
+          for (var venue in action.venueList) {
+            //удаляем пустые сеансы
+            if (venue.actionEventList
+                .any((element) => element.categoryLimitList.isNotEmpty)) {
+              venue.actionEventList.removeWhere((element) =>
+                  element.categoryLimitList.isEmpty &&
+                  element.placementUrl == null);
+            }
           }
+          return action;
         }
-        return action;
       }
+      return null;
     } on TimeoutException catch (e) {
       print('Timeout Error: $e');
       if (port.contains('bil24')) {
@@ -72,33 +74,32 @@ class ActionAPI extends PlatformAPI {
             port = 'https://api2.bil24.pro/json';
         }
       }
-      return false;
+      return null;
     }
   }
 
-  static Future<dynamic> fetchAction() async {
+  static Future<Action> fetchAction() async {
     final chk = await chkConnection();
-    if (chk is Action) {
+    if (chk != null) {
       return chk;
     }
-    if (chk is bool) {
-      final response = await PlatformAPI.platformResponse(
-        command: 'GET_ACTION_EXT',
-        body: <String, dynamic>{
-          'cityId': cityId,
-          'actionId': actionId,
-        },
-      );
-      if (response.statusCode == 200) {
-        print("GET_ACTION_EXT RETRY");
-        String data = response.body;
-        var jsonResponse = jsonDecode(data);
-        if (jsonResponse['resultCode'] != 0) {
-          actionError = jsonResponse['description'];
-        }
-        Action action = Action.fromJson(
-            (jsonDecode(response.body) as Map<String, dynamic>)["action"]);
-        if (action.venueList.isEmpty) return "empty";
+    final response = await PlatformAPI.platformResponse(
+      command: 'GET_ACTION_EXT',
+      body: {
+        'cityId': cityId,
+        'actionId': actionId,
+      },
+    );
+    if (response.statusCode == 200) {
+      print("GET_ACTION_EXT RETRY");
+      String data = response.body;
+      var jsonResponse = jsonDecode(data);
+      if (jsonResponse['resultCode'] != 0) {
+        actionError = jsonResponse['description'];
+      }
+      Action action = Action.fromJson(
+          (jsonDecode(response.body) as Map<String, dynamic>)["action"]);
+      if (action.venueList.isNotEmpty) {
         for (var venue in action.venueList) {
           //удаляем пустые сеансы
           if (venue.actionEventList
@@ -109,16 +110,15 @@ class ActionAPI extends PlatformAPI {
           }
         }
         return action;
-      } else {
-        throw Exception('Failed to get GET_ACTION_EXT response.');
       }
     }
+    throw Exception('Failed to get GET_ACTION_EXT response.');
   }
 
   static Future fetchScheme(int actionEventId) async {
     final response = await PlatformAPI.platformResponse(
       command: 'GET_SCHEMA',
-      body: <String, dynamic>{'actionEventId': actionEventId},
+      body: {'actionEventId': actionEventId},
     );
     if (response.statusCode == 200) {
       String data = response.body;
@@ -161,12 +161,12 @@ class ActionAPI extends PlatformAPI {
     return parsedData;
   }
 
-  static Future<dynamic> checkKDP(int tempAccessCode) async {
+  static Future<bool> checkKDP(int tempAccessCode) async {
     final successAuth = await PlatformAPI.platformResponse(command: 'AUTH');
     if (successAuth.statusCode == 200) {
       final verification = await PlatformAPI.platformResponse(
         command: 'CHECK_KDP',
-        body: <String, dynamic>{
+        body: {
           'kdp': tempAccessCode,
           'actionId': actionId,
           'userId': jsonDecode(successAuth.body)['userId'],
@@ -177,6 +177,7 @@ class ActionAPI extends PlatformAPI {
         final result = jsonDecode(verification.body);
         if (result['resultCode'] == 0) {
           accessCodeNotifier.value = tempAccessCode;
+          return true;
         } else {
           return false;
         }
@@ -238,7 +239,7 @@ class UserAPI extends PlatformAPI {
     }
   }
 
-  static Future<dynamic> confirmEmail(String code, User tempUser) async {
+  static Future<User?> confirmEmail(String code, User tempUser) async {
     final response = await PlatformAPI.platformResponse(
       command: 'CONFIRM_EMAIL',
       body: <String, dynamic>{
@@ -261,14 +262,14 @@ class UserAPI extends PlatformAPI {
             state: UserStates.authorized,
             totalSeatsInReserve: 0);
       } else {
-        return jsonResponse['resultCode'];
+        return null; // jsonResponse['resultCode'];
       }
     } else {
       throw Exception('Failed to get CONFIRM_EMAIL response.');
     }
   }
 
-  static Future<dynamic> getUserInfo(User user) async {
+  static Future<int?> getUserInfo(User user) async {
     final response = await PlatformAPI.platformResponse(
       command: 'GET_USER_INFO',
       body: <String, dynamic>{
@@ -282,15 +283,19 @@ class UserAPI extends PlatformAPI {
       print(jsonResponse['command'] +
           ' ' +
           jsonResponse['resultCode'].toString());
-      if (jsonResponse['resultCode'] == 0) {
+      if (jsonResponse['resultCode'] == 0 &&
+          jsonResponse['reservedSeats'] is int) {
         return jsonResponse['reservedSeats'];
       } else {
+        return null;
+        /*
         return jsonResponse['command'] +
             ' ' +
             jsonResponse['resultCode'].toString();
+        */
       }
     } else {
-      throw Exception('Failed to get CONFIRM_EMAIL response.');
+      throw Exception('Failed to get GET_USER_INFO response.');
     }
   }
 

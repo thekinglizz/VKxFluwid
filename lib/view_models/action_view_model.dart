@@ -17,11 +17,12 @@ class ActionRepository{
     token = '7c696b4af364928202dd';
 
     final action = await ActionAPI.fetchAction();
+
     late Venue preferredVenue;
     late ActionEvent preferredActionEvent;
 
     //выбираем нужный сеанс и его площадку из данных о представлении
-    for (var venue in (action.venueList as List<Venue>)){
+    for (var venue in action.venueList){
       for (ActionEvent ae in venue.actionEventList){
         if (ae.actionEventId == int.parse(actionEventId)){
           preferredActionEvent = ae;

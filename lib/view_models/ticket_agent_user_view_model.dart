@@ -9,103 +9,147 @@ import '../models/user.dart';
 import '../services/api_client.dart';
 import '../services/user_repository.dart';
 
-class UserState extends AsyncNotifier<User>{
+class UserState extends AsyncNotifier<User> {
   late User tempUser;
 
   @override
-  FutureOr<User> build() async{
+  FutureOr<User> build() async {
     UserRepository userRepo = UserRepository();
     final loadedUserFromRepo = await userRepo.loadValue();
     late final dynamic seatsInReserve;
-    tempUser = const User(userId: 0, sessionId: '', email: '',
-        state: UserStates.unknown, totalSeatsInReserve: 0);
+    tempUser = const User(
+        userId: 0,
+        sessionId: '',
+        email: '',
+        state: UserStates.unknown,
+        totalSeatsInReserve: 0);
 
     // Если пользователь сохранен в localstorage
-    if (loadedUserFromRepo.userId > 0 && loadedUserFromRepo.sessionId != ''){
+    if (loadedUserFromRepo.userId > 0 && loadedUserFromRepo.sessionId != '') {
       seatsInReserve = await UserAPI.getUserInfo(loadedUserFromRepo);
-      if (seatsInReserve is int){
-        tempUser = User(userId: loadedUserFromRepo.userId, sessionId: loadedUserFromRepo.sessionId,
-            email: '', state: UserStates.authorized, totalSeatsInReserve: seatsInReserve);
+      if (seatsInReserve != null) {
+        tempUser = User(
+            userId: loadedUserFromRepo.userId,
+            sessionId: loadedUserFromRepo.sessionId,
+            email: '',
+            state: UserStates.authorized,
+            totalSeatsInReserve: seatsInReserve);
       } else {
         userRepo.deleteUser();
-        tempUser = const User(userId: 0, sessionId: '', email: '',
-            state: UserStates.unknown, totalSeatsInReserve: 0);
+        tempUser = const User(
+            userId: 0,
+            sessionId: '',
+            email: '',
+            state: UserStates.unknown,
+            totalSeatsInReserve: 0);
       }
     }
 
     // Если пользователя нет в localStorage получаем его из post msg?
-    if (loadedUserFromRepo.userId == 0 && loadedUserFromRepo.sessionId != ''){
+    if (loadedUserFromRepo.userId == 0 && loadedUserFromRepo.sessionId != '') {
       //захардкоденный пользователь
       int uid = 33922;
       String sid = '7c696b4af364928202dd';
       User hardCodedUser = User(
           totalSeatsInReserve: 0,
           userId: uid,
-          sessionId: sid, email: '',
+          sessionId: sid,
+          email: '',
           state: UserStates.unknown);
       seatsInReserve = await UserAPI.getUserInfo(hardCodedUser);
 
-      tempUser = User(userId: hardCodedUser.userId, sessionId: hardCodedUser.sessionId,
-          email: '', state: UserStates.authorized, totalSeatsInReserve: seatsInReserve);
+      tempUser = User(
+        userId: hardCodedUser.userId,
+        sessionId: hardCodedUser.sessionId,
+        email: '',
+        state: UserStates.authorized,
+        totalSeatsInReserve: seatsInReserve!,
+      );
     }
 
     return tempUser;
   }
 
-  saveUser(User newUser) async{
+  saveUser(User newUser) async {
     UserRepository userRepo = UserRepository();
     final seatsInReserve = await UserAPI.getUserInfo(newUser);
     userRepo.saveUser(newUser);
     userRepo.deleteEmail();
 
-    final st = ref.read(asyncActionProvider).value!.selectedActionEvent!.schemeType;
-    if (st == SchemeType.assignedSeats || st == SchemeType.mixed){
+    final st =
+        ref.read(asyncActionProvider).value!.selectedActionEvent!.schemeType;
+    if (st == SchemeType.assignedSeats || st == SchemeType.mixed) {
       ref.invalidate(asyncSchemeProvider);
     }
 
-    state = AsyncValue.data(state.value!.copyWith(userId: newUser.userId, totalSeatsInReserve: seatsInReserve,
-        sessionId: newUser.sessionId, email: newUser.email, state: newUser.state),);
+    state = AsyncValue.data(
+      state.value!.copyWith(
+          userId: newUser.userId,
+          totalSeatsInReserve: seatsInReserve!,
+          sessionId: newUser.sessionId,
+          email: newUser.email,
+          state: newUser.state),
+    );
   }
 
-  saveSynthUser(User synthUser){
+  saveSynthUser(User synthUser) {
     UserRepository userRepo = UserRepository();
     userRepo.saveUser(synthUser);
-    state = AsyncValue.data(state.value!.copyWith(userId: synthUser.userId,
-        sessionId: synthUser.sessionId, email: synthUser.email, state: synthUser.state),);
-  }//убрать
+    state = AsyncValue.data(
+      state.value!.copyWith(
+          userId: synthUser.userId,
+          sessionId: synthUser.sessionId,
+          email: synthUser.email,
+          state: synthUser.state),
+    );
+  } //убрать
 
-  clearUser(){
+  clearUser() {
     UserRepository userRepo = UserRepository();
     userRepo.deleteUser();
 
-    final st = ref.read(asyncActionProvider).value!.selectedActionEvent!.schemeType;
-    if (st == SchemeType.assignedSeats || st == SchemeType.mixed){
+    final st =
+        ref.read(asyncActionProvider).value!.selectedActionEvent!.schemeType;
+    if (st == SchemeType.assignedSeats || st == SchemeType.mixed) {
       ref.invalidate(asyncSchemeProvider);
     }
 
-    state = AsyncValue.data(state.value!.copyWith(userId: 0,
-        sessionId: '', email: '', totalSeatsInReserve: 0, state: UserStates.unknown),);
+    state = AsyncValue.data(
+      state.value!.copyWith(
+          userId: 0,
+          sessionId: '',
+          email: '',
+          totalSeatsInReserve: 0,
+          state: UserStates.unknown),
+    );
   }
 
-  incrementTotalSeatsInReserve() async{
-    state = AsyncValue.data(state.value!
-        .copyWith(totalSeatsInReserve: state.value!.totalSeatsInReserve + 1, ));
+  incrementTotalSeatsInReserve() async {
+    state = AsyncValue.data(state.value!.copyWith(
+      totalSeatsInReserve: state.value!.totalSeatsInReserve + 1,
+    ));
   }
 
-  decrementTotalSeatsInReserve(){
-    state = AsyncValue.data(state.value!
-        .copyWith(totalSeatsInReserve: state.value!.totalSeatsInReserve - 1),);
+  decrementTotalSeatsInReserve() {
+    state = AsyncValue.data(
+      state.value!
+          .copyWith(totalSeatsInReserve: state.value!.totalSeatsInReserve - 1),
+    );
   }
 
-  clearTotalSeatsInReserve(){
-    state = AsyncValue.data(state.value!.copyWith(totalSeatsInReserve: 0),);
+  clearTotalSeatsInReserve() {
+    state = AsyncValue.data(
+      state.value!.copyWith(totalSeatsInReserve: 0),
+    );
   }
 
-  setTotalSeatsInReserve(int seatsCount){
-    state = AsyncValue.data(state.value!.copyWith(totalSeatsInReserve: seatsCount),);
+  setTotalSeatsInReserve(int seatsCount) {
+    state = AsyncValue.data(
+      state.value!.copyWith(totalSeatsInReserve: seatsCount),
+    );
   }
 
-  Future<bool> isUserRegistered(){
+  Future<bool> isUserRegistered() {
     UserRepository userRepo = UserRepository();
     return userRepo.isUserRegistered();
   }

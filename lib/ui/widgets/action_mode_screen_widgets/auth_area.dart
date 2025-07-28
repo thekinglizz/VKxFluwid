@@ -218,11 +218,12 @@ class _OtpWidgetState extends ConsumerState<OtpWidget> {
       setState(() {});
     } else {
       final user = await UserAPI.confirmEmail(_otpEditingController.value.text, widget.user);
-      if (user is User) {
+      if (user != null) {
         ref.read(asyncUserProvider.notifier).saveUser(user);
         _hasError = false;
       } else {
-        _hasError = true;setState(() {});
+        _hasError = true;
+        setState(() {});
       }
       _otpEditingController.text = '';
       /*UserAPI.confirmEmail(_otpEditingController.value.text, widget.user)
