@@ -18,7 +18,7 @@ class CategoryInfoWidget extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: SizedBox(
-        height: 40.0,
+        height: 36.0,
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
@@ -36,15 +36,15 @@ class CategoryInfoWidget extends ConsumerWidget {
                   side: BorderSide(color: Colors.grey.shade200, width: 1.0),
                   borderRadius: BorderRadius.circular(20,),),
                 elevation: 0.0,
-                color: Colors.grey.shade200,
+                color: Colors.white,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(
-                        height: 15.0,
-                        width: 15.0,
+                        height: 10.0,
+                        width: 10.0,
                         child: Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
@@ -84,7 +84,7 @@ class UserSelectionLegend extends StatelessWidget {
           shape: RoundedRectangleBorder(
             side: BorderSide(color: Colors.grey.shade200, width: 1.0),
             borderRadius: BorderRadius.circular(20,),),
-          color: Colors.grey.shade200,
+          color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(

@@ -138,10 +138,10 @@ class _CartWidgetState extends ConsumerState<CartWidget> {
                                   mainAxisSize: MainAxisSize.min,
                                   spacing: 5,
                                   children: [
-                                    Icon(CupertinoIcons.time, color: MaterialTheme.lightScheme().onSurfaceVariant, size: 28,),
+                                    Icon(CupertinoIcons.time, color: MaterialTheme.lightScheme().onSurface, size: 28,),
                                     TimerCountdown(
-                                      colonsTextStyle: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 30, 'Regular'),
-                                      timeTextStyle: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 30, 'Regular'),
+                                      colonsTextStyle: customTextStyle(MaterialTheme.lightScheme().onSurface, 30, 'Regular'),
+                                      timeTextStyle: customTextStyle(MaterialTheme.lightScheme().onSurface, 30, 'Regular'),
                                       spacerWidth: 5.0,
                                       enableDescriptions: false,
                                       format: CountDownTimerFormat.minutesSeconds,

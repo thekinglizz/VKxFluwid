@@ -126,7 +126,7 @@ class _DesktopCategoryState extends ConsumerState<DesktopCategoryCard> {
                                   SizedBox(
                                     child: Text(cName,
                                       overflow: TextOverflow.fade, textAlign: TextAlign.left,
-                                      style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant,
+                                      style: customTextStyle(MaterialTheme.lightScheme().onSurface,
                                           18, 'Regular'),),
                                   ),
                                   // Меню тарифов
@@ -141,7 +141,7 @@ class _DesktopCategoryState extends ConsumerState<DesktopCategoryCard> {
                                     child: Text(AppLocalizations.of(context)!.availability
                                         + widget.category.available().toString(),
                                         style: customTextStyle(MaterialTheme
-                                            .lightScheme().onSurfaceVariant, 18, 'Light')),
+                                            .lightScheme().onSurface, 18, 'Light')),
                                   ),
                                 ],
                               ),
@@ -157,10 +157,10 @@ class _DesktopCategoryState extends ConsumerState<DesktopCategoryCard> {
                                   .tariffsSelection.keys.firstWhere((t)=>t.id == value).price}'
                                   ' ${widget.currency}',
                                 style: customTextStyle(MaterialTheme.lightScheme()
-                                    .onSurfaceVariant, 22, 'Regular'),);})
+                                    .onSurface, 22, 'Regular'),);})
                             : Text('${widget.category.price} ${widget.currency}',
                           style: customTextStyle(MaterialTheme.lightScheme()
-                              .onSurfaceVariant, 22, 'Regular'),),
+                              .onSurface, 22, 'Regular'),),
                       ],
                     ),
                   )
@@ -220,13 +220,13 @@ class _DesktopCategoryState extends ConsumerState<DesktopCategoryCard> {
                                   .tariffsSelection.keys.firstWhere((t)=>t.id == value);
                               return Text((widget.category as CompositedTariffCategory) //(cvm[widget.actionEventId]!.firstWhere((c)=>c.categoryPriceId == widget.category.categoryPriceId) as CompositedTariffCategory)
                                   .tariffsSelection[tariff]!.toString(),
-                                style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant,
+                                style: customTextStyle(MaterialTheme.lightScheme().onSurface,
                                     24, 'Light'),);
                             }
                         )
                             : Text(widget.category.selected.toString(),
                           style: customTextStyle(MaterialTheme.lightScheme()
-                              .onSurfaceVariant, 24, 'Light'),),
+                              .onSurface, 24, 'Light'),),
                         //Увеличить количество билетов категории
                         Container(
                           height: 30.0,
@@ -300,7 +300,7 @@ class _MobileCategoryState extends ConsumerState<MobileCategoryCard> {
               spacing: 5,
               children: [
                 Text(cName, textAlign: TextAlign.justify,
-                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 17, 'Light')
+                  style: customTextStyle(MaterialTheme.lightScheme().onSurface, 17, 'Light')
                       .copyWith(fontWeight:FontWeight.bold),),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -324,12 +324,12 @@ class _MobileCategoryState extends ConsumerState<MobileCategoryCard> {
                                   .tariffsSelection.keys.firstWhere((t)=>t.id == value).price}'
                                   ' ${widget.currency}',
                                 style: customTextStyle(MaterialTheme.lightScheme()
-                                    .onSurfaceVariant, 18, 'Regular'),);
+                                    .onSurface, 18, 'Regular'),);
                             }
                         )
                             : Text('${widget.category.price} ${widget.currency}',
                           style: customTextStyle(MaterialTheme.lightScheme()
-                              .onSurfaceVariant, 18, 'Regular'),),
+                              .onSurface, 18, 'Regular'),),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12.0),
                           child: Container(
@@ -358,7 +358,7 @@ class _MobileCategoryState extends ConsumerState<MobileCategoryCard> {
                                     }
                                   },
                                       icon: Icon(Icons.remove,
-                                      color: MaterialTheme.lightScheme().onSurfaceVariant)),
+                                      color: MaterialTheme.lightScheme().onSurface)),
                                 ),
                                 //Выбранное количество билетов категории или ее тарифа
                                 widget.category is CompositedTariffCategory
@@ -369,13 +369,13 @@ class _MobileCategoryState extends ConsumerState<MobileCategoryCard> {
                                           .tariffsSelection.keys.firstWhere((t)=>t.id == value);
                                       return Text((widget.category as CompositedTariffCategory)
                                           .tariffsSelection[tariff]!.toString(),
-                                        style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant,
+                                        style: customTextStyle(MaterialTheme.lightScheme().onSurface,
                                             20, 'Light'),);
                                     }
                                 )
                                     : Text(widget.category.selected.toString(),
                                   style: customTextStyle(MaterialTheme.lightScheme()
-                                      .onSurfaceVariant, 20, 'Light'),),
+                                      .onSurface, 20, 'Light'),),
                                 //Увеличить количество билетов категории
                                 Container(
                                   height: 30.0,

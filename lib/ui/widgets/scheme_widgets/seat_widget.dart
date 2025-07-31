@@ -102,9 +102,9 @@ class TariffMenuItem extends StatelessWidget {
         title: Text(
             tariffName,
             style: isSelected
-                ? customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular')
+                ? customTextStyle(MaterialTheme.lightScheme().onSurface, 14, 'Regular')
                 .copyWith(fontWeight: FontWeight.bold)
-                : customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular')
+                : customTextStyle(MaterialTheme.lightScheme().onSurface, 14, 'Regular')
         ),
       ),
     );
@@ -168,7 +168,7 @@ class _FanIdInputMenuItemState extends ConsumerState<FanIdInputMenuItem> {
             '${widget.seat.bil24seatObj.row}'
             ' - ${AppLocalizations.of(context)!.number} '
             '${widget.seat.bil24seatObj.number}',
-          style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular'),),
+          style: customTextStyle(MaterialTheme.lightScheme().onSurface, 14, 'Regular'),),
         Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,7 +194,7 @@ class _FanIdInputMenuItemState extends ConsumerState<FanIdInputMenuItem> {
           ],
         ),
         Text(AppLocalizations.of(context)!.fanIdHint,
-          style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular'),),
+          style: customTextStyle(MaterialTheme.lightScheme().onSurface, 14, 'Regular'),),
       ],
     );
     } else {

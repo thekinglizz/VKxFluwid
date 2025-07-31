@@ -50,10 +50,10 @@ class MobileSchemeScreen extends ConsumerWidget {
                     spacing: 5,
                     children: [
                       Icon(CupertinoIcons.calendar, size: 16,
-                          color: MaterialTheme.lightScheme().onSurfaceVariant),
+                          color: MaterialTheme.lightScheme().onSurface),
                       Flexible(
                         child: Text(actionEventDate, maxLines: 1,
-                            style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 16.0, 'Regular')),
+                            style: customTextStyle(MaterialTheme.lightScheme().onSurface, 16.0, 'Regular')),
                       ),
                     ],
                   ),
@@ -61,10 +61,10 @@ class MobileSchemeScreen extends ConsumerWidget {
                     spacing: 5,
                     children: [
                       Icon(CupertinoIcons.location_solid, size: 16,
-                          color: MaterialTheme.lightScheme().onSurfaceVariant),
+                          color: MaterialTheme.lightScheme().onSurface),
                       Flexible(
                         child: Text(venue.venueName, maxLines: 1,
-                            style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 16.0, 'Regular')
+                            style: customTextStyle(MaterialTheme.lightScheme().onSurface, 16.0, 'Regular')
                         ),
                       ),
                     ],
@@ -185,7 +185,7 @@ class FluwidBottomSheet extends ConsumerWidget {
                       child: Text('${data.selectedSeats.length} '
                           '${AppLocalizations.of(context)!.numberOfTickets}: '
                           '${totalSum.value} ${data.schemeData.currency}',
-                          style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant,
+                          style: customTextStyle(MaterialTheme.lightScheme().onSurface,
                               14.0, 'Regular').copyWith(fontWeight: FontWeight.w800)
                       )
                   ),
@@ -263,16 +263,16 @@ class ReservedCard extends ConsumerWidget {
                 children: [
                   Flexible(
                     child: Text("${AppLocalizations.of(context)!.sector}: ${seatInfo.bil24seatObj.sector}",
-                        style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 12, 'Regular')),
+                        style: customTextStyle(MaterialTheme.lightScheme().onSurface, 12, 'Regular')),
                   ),
                   Flexible(
                     child: Text('${AppLocalizations.of(context)!.row}: ${seatInfo.bil24seatObj.row}, '
                         '${AppLocalizations.of(context)!.number}: ${seatInfo.bil24seatObj.number}',
-                      style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 12, 'Regular'),),
+                      style: customTextStyle(MaterialTheme.lightScheme().onSurface, 12, 'Regular'),),
                   ),
                   if ((seatWithTariffs.isNotEmpty && seatWithTariffs.containsKey(seatInfo))
                       || seatInfo.category.tariffIdMap.isEmpty) Text('${getPrice(seatInfo)} $currency',
-                      style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 12, 'Regular')
+                      style: customTextStyle(MaterialTheme.lightScheme().onSurface, 12, 'Regular')
                           .copyWith(fontWeight: FontWeight.bold)
                   ),
                 ],

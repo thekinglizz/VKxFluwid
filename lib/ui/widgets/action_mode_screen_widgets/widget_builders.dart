@@ -18,7 +18,7 @@ import '../../../view_models/user_view_model.dart';
 import '../../screens/cart_screen.dart';
 import '../../screens/acton_mode_screen.dart';
 
-Widget buildBodyEventData(ActionEvent actionEvent, BuildContext context,){
+Widget buildBodyEventData(ActionEvent actionEvent, BuildContext context, String venueName, String actionAge){
   switch (actionEvent.schemeType){
     case SchemeType.generalAdmission:
       return Padding(
@@ -33,14 +33,23 @@ Widget buildBodyEventData(ActionEvent actionEvent, BuildContext context,){
             Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
             child: Row(
+              spacing: 8,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(CupertinoIcons.calendar, size: 22,
-                    color: MaterialTheme.lightScheme().onSurfaceVariant),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(actionEvent.date,
-                    style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 22, 'Regular'),),
+                Text(actionEvent.vkDate,
+                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular'),),
+                Text(actionEvent.time,
+                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular'),),
+                Text("•",
+                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular'),),
+                Flexible(
+                  child: Text(venueName, maxLines: 1, overflow: TextOverflow.ellipsis,
+                    style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular'),),
                 ),
+                Text("•",
+                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular'),),
+                Text(actionAge,
+                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular'),),
               ],
             ),
           ),
@@ -52,7 +61,7 @@ Widget buildBodyEventData(ActionEvent actionEvent, BuildContext context,){
         width: 800,
         child: Center(
           child: Text(AppLocalizations.of(context)!.emptyGA,
-            style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 20, 'Light'), ),
+            style: customTextStyle(MaterialTheme.lightScheme().onSurface, 20, 'Light'), ),
         ),
       );
   }

@@ -10,7 +10,7 @@ TextStyle customTextStyle(Color? color, double? size, String family) {
     color: color ?? Colors.black,
     fontSize: size,
     wordSpacing: 2.0,
-    letterSpacing: 0.9
+    letterSpacing: 0
   );
 }
 

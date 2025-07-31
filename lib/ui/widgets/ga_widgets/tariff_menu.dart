@@ -30,7 +30,7 @@ class _TariffChoicerNewState extends State<TariffChoicerNew> {
       tList.add(MenuItemButton(
         style: FilledButton.styleFrom(overlayColor: MaterialTheme.lightScheme().onSecondaryFixedVariant),
         child: Text(tariff.name,
-          style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, screenWidth > 1100
+          style: customTextStyle(MaterialTheme.lightScheme().onSurface, screenWidth > 1100
               ? 20.0 : 16.0, 'Regular')),
         onPressed: (){
           selectedTariff = tariff.name;

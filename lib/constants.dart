@@ -146,9 +146,9 @@ class EmptyCartContent extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(CupertinoIcons.shopping_cart, size: 80, color: MaterialTheme.lightScheme().onSurfaceVariant),
+            Icon(CupertinoIcons.shopping_cart, size: 80, color: MaterialTheme.lightScheme().onSurface),
             const SizedBox(height: 20.0,),
-            Text(userMsg, style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant,
+            Text(userMsg, style: customTextStyle(MaterialTheme.lightScheme().onSurface,
                     screenWidth > 900 ? 20 : 18, 'Regular')),
           ],
         ),

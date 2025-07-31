@@ -58,7 +58,7 @@ class _CartBadgeForDesktopState extends State<_CartBadgeForDesktop> {
         child: GestureDetector(
           onTap: (){buildShowModalCart(context);},
           child: CartWidgetIcon(iconData: CupertinoIcons.shopping_cart, size: 45.0,
-              color: MaterialTheme.lightScheme().onSurfaceVariant),
+              color: MaterialTheme.lightScheme().onSurface),
         )
     );
   }
@@ -115,7 +115,7 @@ class _AccessCodeVerification extends StatelessWidget {
               spacing: 8,
               children: [
                 Text('Введите код доступа к представлению:',
-                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant,
+                  style: customTextStyle(MaterialTheme.lightScheme().onSurface,
                       screenWidth > 900 ? 22 : 18, 'Regular'),),
                 const AccessCodeInput()
               ],
@@ -164,7 +164,7 @@ class _FluwidHomeState extends ConsumerState<FluwidHome> {
                           Flexible(
                             child: Text(data.actionExt.actionName, maxLines: 2,
                               textAlign: TextAlign.center,
-                              style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant,
+                              style: customTextStyle(MaterialTheme.lightScheme().onSurface,
                                   isDesktop ? 30 : 20, 'Light')
                                   .copyWith(fontWeight: FontWeight.bold),),
                           ),
@@ -185,9 +185,9 @@ class _FluwidHomeState extends ConsumerState<FluwidHome> {
                       padding: const EdgeInsets.only(top: 22.0),
                       child: NavigationDestination(
                         selectedIcon: Icon(CupertinoIcons.house_fill,
-                          size: 30.0, color: MaterialTheme.lightScheme().onSurfaceVariant,),
+                          size: 30.0, color: MaterialTheme.lightScheme().onSurface,),
                         icon: Icon(CupertinoIcons.house,
-                          color: MaterialTheme.lightScheme().onSurfaceVariant, size: 30.0,),
+                          color: MaterialTheme.lightScheme().onSurface, size: 30.0,),
                         label: '',
                       ),
                     ),
@@ -195,9 +195,9 @@ class _FluwidHomeState extends ConsumerState<FluwidHome> {
                       padding: const EdgeInsets.only(top: 22.0),
                       child: NavigationDestination(
                         selectedIcon: CartWidgetIcon(iconData: CupertinoIcons.cart_fill,
-                            size: 30.0,  color: MaterialTheme.lightScheme().onSurfaceVariant),
+                            size: 30.0,  color: MaterialTheme.lightScheme().onSurface),
                         icon: CartWidgetIcon(iconData: CupertinoIcons.cart,
-                            size: 30.0, color: MaterialTheme.lightScheme().onSurfaceVariant),
+                            size: 30.0, color: MaterialTheme.lightScheme().onSurface),
                         label: '',
                       ),
                     ),
@@ -571,10 +571,10 @@ class _MobileHeader extends ConsumerWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(CupertinoIcons.calendar, size: 22,
-                                        color: MaterialTheme.lightScheme().onSurfaceVariant),
+                                        color: MaterialTheme.lightScheme().onSurface),
                                     Text(aEvent.date,
                                       style: customTextStyle(MaterialTheme.lightScheme()
-                                          .onSurfaceVariant, 22, 'Regular'),),
+                                          .onSurface, 22, 'Regular'),),
                                   ],
                                 ),
                                 SizedBox(
@@ -624,6 +624,8 @@ class _Body extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     ActionEvent aEvent = ref.watch(asyncActionProvider).value!.selectedActionEvent!;
+    String actionAge = ref.read(asyncActionProvider).value!.actionExt.age;
+    Venue venue = ref.watch(asyncActionProvider.select((avm)=>avm.value!.selectedVenue));
     //Map<String, List<dynamic>> dateMap = ref.read(asyncActionProvider).value!.actionEventsGroupedByDate;
     //DateTime? selectedDate = ref.read(asyncActionProvider).value!.selectedDate;
     return  SizedBox(
@@ -639,7 +641,7 @@ class _Body extends ConsumerWidget {
             margin: const EdgeInsets.all(0),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: buildBodyEventData(aEvent, context),
+              child: buildBodyEventData(aEvent, context, venue.venueName, actionAge),
             ),
           ),
           Padding(
@@ -648,8 +650,7 @@ class _Body extends ConsumerWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const Image(image: AssetImage('images/logo2_on_white.png'),
-                  width: 30, height: 30,),
+                //const Image(image: AssetImage('images/logo2_on_white.png'), width: 30, height: 30,),
                 Text(version),
               ],
             ),
@@ -685,9 +686,9 @@ class GeneralAdmissionArea extends ConsumerWidget {
               if (date !="off") Row(
                 children: [
                   Icon(CupertinoIcons.calendar, size: 22,
-                      color: MaterialTheme.lightScheme().onSurfaceVariant),
+                      color: MaterialTheme.lightScheme().onSurface),
                   Text(actionEvent.date,
-                    style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 22, 'Regular'),),
+                    style: customTextStyle(MaterialTheme.lightScheme().onSurface, 22, 'Regular'),),
                 ],
               ),
               if (hint != "off") SizedBox(
@@ -695,7 +696,7 @@ class GeneralAdmissionArea extends ConsumerWidget {
                 child: Text(AppLocalizations.of(context)!.hint1,
                   textAlign: TextAlign.justify,
                   style: customTextStyle(MaterialTheme
-                      .lightScheme().onSurfaceVariant,screenWidth < 700 ? 17 : 20, 'Light'),),
+                      .lightScheme().onSurface,screenWidth < 700 ? 17 : 20, 'Light'),),
               ),
             ],
           ),
@@ -736,51 +737,83 @@ class SchemeArea extends ConsumerWidget {
             spacing: 10,
             mainAxisSize: MainAxisSize.min,
             children: [
-              //Категории
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (data.schemeData.categoryInfoWidgetList.length > 5)
-                      IconButton(onPressed: (){
-                        scrollController.animateTo(scrollController.offset - 200,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut);
-                        }, icon: Icon(Icons.arrow_back_ios_new,
-                        color: MaterialTheme.lightScheme().onSurfaceVariant,)),
-                    Flexible(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: SizedBox(
-                          height : 50.0,
-                          child: ListView(
-                            controller: scrollController, shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            children: data.schemeData.categoryInfoWidgetList,
-                          ),
-                        ),
-                      ),
-                    ),
-                    if (data.schemeData.categoryInfoWidgetList.length > 5)
-                      IconButton(onPressed: (){
-                        scrollController.animateTo(scrollController.offset + 300,
-                            duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-                        }, icon: Icon(Icons.arrow_forward_ios,
-                        color: MaterialTheme.lightScheme().onSurfaceVariant,)),
-                  ],
-                ),
-              ),
               //Схема
               Stack(
                 children: [
                   SchemeViewer(size: data.schemeData.ivSize, siData: data.schemeData.siData,
                      sectorList: data.schemeData.sectorList, schemeCoef: data.schemeData.schemeCoef),
+                  //Категории
+                  Positioned(
+                    top: 24,
+                    left: 24,
+                    right: 24,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        spacing: 8,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (data.schemeData.categoryInfoWidgetList.length > 5)
+                            Container(
+                              width: 32.0,
+                              height: 32.0,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.rectangle,
+                                border: Border.all(color: Colors.grey.shade200, width: 0.5),
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
+                              child: IconButton(
+                                  padding: const EdgeInsets.all(1.0),
+                                  color: MaterialTheme.lightScheme().onSurface,
+                                  iconSize: 18.0,
+                                  onPressed: (){
+                                scrollController.animateTo(scrollController.offset - 200,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut);
+                              }, icon: const Icon(Icons.arrow_back_ios_new,)),
+                            ),
+                          Flexible(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: SizedBox(
+                                height : 50.0,
+                                child: ListView(
+                                  controller: scrollController, shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  children: data.schemeData.categoryInfoWidgetList,
+                                ),
+                              ),
+                            ),
+                          ),
+                          if (data.schemeData.categoryInfoWidgetList.length > 5)
+                            Container(
+                              width: 32.0,
+                              height: 32.0,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.rectangle,
+                                border: Border.all(color: Colors.grey.shade200, width: 0.5),
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
+                              child: IconButton(
+                                  padding: const EdgeInsets.all(1.0),
+                                  color: MaterialTheme.lightScheme().onSurface,
+                                  iconSize: 18.0,
+                                  onPressed: (){
+                                    scrollController.animateTo(scrollController.offset + 300,
+                                    duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                              }, icon: const Icon(Icons.arrow_forward_ios,)),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
                   //Кнопка перехода к корзине
                   if (data.selectedSeats.isNotEmpty && totalSum.value > 0)
                     Positioned(
-                      top: 16,
+                      bottom: 16,
                       right: 16,
                       child: SizedBox(
                         child: Card(
@@ -818,7 +851,6 @@ class SchemeArea extends ConsumerWidget {
                         ),
                       ),
                     ),
-
                 ],
               ),
             ],

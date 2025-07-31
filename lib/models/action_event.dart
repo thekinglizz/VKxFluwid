@@ -36,6 +36,12 @@ class ActionEvent{
         .format(inputDate).toTitleCase() + time;
   }
 
+  get vkDate{
+    var inputDate = inputFormat.parse('$day $time');
+    return DateFormat('EEE, dd MMMM,', Intl.shortLocale(Intl.defaultLocale!))
+        .format(inputDate).toTitleCase();
+  }
+
   SchemeType get schemeType{
     if (placementUrl == null && categoryLimitList.isNotEmpty){
       return SchemeType.generalAdmission;

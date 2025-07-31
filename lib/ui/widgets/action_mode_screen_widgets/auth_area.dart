@@ -29,7 +29,7 @@ class AuthorisationArea extends ConsumerWidget {
             AuthorizationWidget(user: user,),
             if (user.state == UserStates.unknown)
               Text('*${AppLocalizations.of(context)!.memoContent}',
-              style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant,
+              style: customTextStyle(MaterialTheme.lightScheme().onSurface,
                   screenWidth > 700 ? 17.0 : 15.0, 'Light'),
               textAlign: TextAlign.justify,),
             const SizedBox(height: 15,),
@@ -56,19 +56,19 @@ class UserActions extends StatelessWidget {
           child: GestureDetector(
             onTap: (){},
             child: Text(AppLocalizations.of(context)!.personalAreaLabel,
-              style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant,
+              style: customTextStyle(MaterialTheme.lightScheme().onSurface,
                   screenWidth > 1100 ? 17.0 : 15.0, 'Light'),
               textAlign: TextAlign.center,),
           ),
         ),
         Icon(CupertinoIcons.circle_fill, size: 8,
-          color: MaterialTheme.lightScheme().onSurfaceVariant,),
+          color: MaterialTheme.lightScheme().onSurface,),
         MouseRegion(
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
             onTap: (){},
             child: Text(AppLocalizations.of(context)!.helpButton,
-              style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant,
+              style: customTextStyle(MaterialTheme.lightScheme().onSurface,
                   screenWidth > 1100 ? 17.0 : 15.0, 'Light'),
               textAlign: TextAlign.center,),
           ),
@@ -189,7 +189,7 @@ class _AuthorizationWidgetState extends ConsumerState<AuthorizationWidget> {
             child: GestureDetector(
               onTap: (){ _resetUser();},
               child: Text(AppLocalizations.of(context)!.setAnotherEmail,
-                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant,
+                  style: customTextStyle(MaterialTheme.lightScheme().onSurface,
                       16, 'Regular')), ),
           ),
         if (widget.user.state == UserStates.processing)
@@ -242,7 +242,7 @@ class _OtpWidgetState extends ConsumerState<OtpWidget> {
       children: [
         Text(AppLocalizations.of(context)!.confirmMemo,
           style: customTextStyle(MaterialTheme.lightScheme()
-              .onSurfaceVariant, 16, 'Regular'),
+              .onSurface, 16, 'Regular'),
           textAlign: TextAlign.center,),
         Wrap(
           alignment: WrapAlignment.center,
@@ -297,7 +297,7 @@ class _OtpWidgetState extends ConsumerState<OtpWidget> {
              },
                 padding: EdgeInsets.zero,
                 icon: Icon(Icons.paste_rounded, size: 30,
-                  color:MaterialTheme.lightScheme().onSurfaceVariant,))
+                  color:MaterialTheme.lightScheme().onSurface,))
           ],
         ),
         if (_hasError) Padding(
@@ -320,7 +320,7 @@ class _OtpWidgetState extends ConsumerState<OtpWidget> {
           child: GestureDetector(
             onTap: (){widget.callback();},
             child: Text(AppLocalizations.of(context)!.setAnotherEmail,
-                style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant,
+                style: customTextStyle(MaterialTheme.lightScheme().onSurface,
                     18, 'Regular')), ),
         )
       ],

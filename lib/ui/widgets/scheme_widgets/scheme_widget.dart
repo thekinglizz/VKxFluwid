@@ -171,7 +171,7 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
                   width: widget.size.x.toDouble(),
                   height: widget.size.y.toDouble(),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade50,
+                    color: const Color(0xffF2F3F5),
                     border: Border.all(color: Colors.grey.shade300, width: 1.5),
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -260,21 +260,7 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
                   ),
                 ),
               ),
-              if(screenWidth < 700) Positioned(top:20, right: 20, child:  ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: Opacity(
-                  opacity: 0.7,
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade700,
-                      borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-                    ),
-                    child: const Icon(Icons.pinch_outlined, size: 25, color: Colors.white),
-                  ),
-                ),
-              )),
+
               buildPositioned(context)
             ],
           );
@@ -285,75 +271,21 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
 
   Positioned buildPositioned(BuildContext context) {
     return Positioned(
-      top: 20.0,
-      left: 20.0,
-      child: Row(
-        spacing: 8,
+      top: 342.0,
+      right: 24.0,
+      child: Column(
+        spacing: 12,
         mainAxisSize: MainAxisSize.min,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(50.0),
             child: Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-                border: Border.all(color: MaterialTheme.lightScheme().onSurfaceVariant),
-                color: Colors.white,
-              ),
-              child: IconButton(onPressed: () {
-                _currentZoom = 1.0;
-                _viewTransformationController.value =
-                    Matrix4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-                final siWidth = (widget.siData.schemeSize.width * widget.schemeCoef)/2;
-                final siHeight = (widget.siData.schemeSize.height * widget.schemeCoef)/2.5;
-                if (screenWidth > 700){
-                  _viewTransformationController.value
-                      .translate(390-siWidth, 390-siHeight);
-                }
-                else {
-                  _viewTransformationController.value
-                      .translate(screenWidth/2-siWidth, (screenHeight*0.7)/2-siHeight);
-                }
-              },
-                  icon: Icon(Icons.center_focus_strong, size: 35.0,
-                    color: MaterialTheme.lightScheme().onSurfaceVariant,)),
-            ),
-          ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(50.0),
-            child: Container(
+              height: 48,
+              width: 48,
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-                  border: Border.all(color: MaterialTheme.lightScheme().onSurfaceVariant)
-              ),
-              child: IconButton(onPressed: () {
-                late dynamic x;
-                _currentZoom = _viewTransformationController
-                    .value.getMaxScaleOnAxis();
-                if (screenWidth > 1100) {
-                  x = const Offset(400, 400);
-                } else {
-                  x = Offset(screenWidth / 2, screenWidth / 2);
-                }
-                final offset1 = _viewTransformationController.toScene(x);
-                _viewTransformationController.value.scale(.5);
-                final offset2 = _viewTransformationController.toScene(x);
-                final dx = offset1.dx - offset2.dx;
-                final dy = offset1.dy - offset2.dy;
-                _viewTransformationController.value.translate(-dx, -dy);
-                setState(() {});
-              },
-                  icon: Icon(Icons.zoom_out_outlined, size: 35.0,
-                    color: MaterialTheme.lightScheme().onSurfaceVariant,)),
-            ),
-          ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(50.0),
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(50.0)),
-                  border: Border.all(color: MaterialTheme.lightScheme().onSurfaceVariant)
+                  border: Border.all(color: Colors.grey.shade300, width: 0.5)
               ),
               child: IconButton(
                   onPressed: () {
@@ -373,8 +305,68 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
                     _viewTransformationController.value.translate(-dx, -dy);
                     setState(() {});
                   },
-                  icon: Icon(Icons.zoom_in_outlined, size: 35.0,
-                    color: MaterialTheme.lightScheme().onSurfaceVariant,)),
+                  icon: Icon(Icons.add, size: 24.0,
+                    color: MaterialTheme.lightScheme().onSurface,)),
+            ),
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(50.0),
+            child: Container(
+              height: 48,
+              width: 48,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                  border: Border.all(color: Colors.grey.shade300, width: 0.5)
+              ),
+              child: IconButton(onPressed: () {
+                late dynamic x;
+                _currentZoom = _viewTransformationController
+                    .value.getMaxScaleOnAxis();
+                if (screenWidth > 1100) {
+                  x = const Offset(400, 400);
+                } else {
+                  x = Offset(screenWidth / 2, screenWidth / 2);
+                }
+                final offset1 = _viewTransformationController.toScene(x);
+                _viewTransformationController.value.scale(.5);
+                final offset2 = _viewTransformationController.toScene(x);
+                final dx = offset1.dx - offset2.dx;
+                final dy = offset1.dy - offset2.dy;
+                _viewTransformationController.value.translate(-dx, -dy);
+                setState(() {});
+              },
+                  icon: Icon(Icons.remove, size: 24.0,
+                    color: MaterialTheme.lightScheme().onSurface,)),
+            ),
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(50.0),
+            child: Container(
+              height: 48,
+              width: 48,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                border: Border.all(color: Colors.grey.shade300, width: 0.5),
+                color: Colors.white,
+              ),
+              child: IconButton(onPressed: () {
+                _currentZoom = 1.0;
+                _viewTransformationController.value =
+                    Matrix4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+                final siWidth = (widget.siData.schemeSize.width * widget.schemeCoef)/2;
+                final siHeight = (widget.siData.schemeSize.height * widget.schemeCoef)/2.5;
+                if (screenWidth > 700){
+                  _viewTransformationController.value
+                      .translate(390-siWidth, 390-siHeight);
+                }
+                else {
+                  _viewTransformationController.value
+                      .translate(screenWidth/2-siWidth, (screenHeight*0.7)/2-siHeight);
+                }
+              },
+                  icon: Icon(Icons.center_focus_strong, size: 24.0,
+                    color: MaterialTheme.lightScheme().onSurface,)),
             ),
           ),
         ],
@@ -382,3 +374,20 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
     );
   }
 }
+
+/*
+* if(screenWidth < 700) Positioned(top:20, right: 20, child:  ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Opacity(
+                  opacity: 0.7,
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade700,
+                      borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                    ),
+                    child: const Icon(Icons.pinch_outlined, size: 25, color: Colors.white),
+                  ),
+                ),
+              )),*/

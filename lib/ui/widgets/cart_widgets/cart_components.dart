@@ -68,7 +68,7 @@ class _OrderInfoState extends ConsumerState<OrderInfo> {
             spacing: 16,
             children: [
               Text(AppLocalizations.of(context)!.promoHintLabel, textAlign: TextAlign.justify,
-                style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant,
+                style: customTextStyle(MaterialTheme.lightScheme().onSurface,
                     13, 'Regular'),),
               const PromoCodeForm(),
             ],
@@ -109,7 +109,7 @@ class _OrderInfoState extends ConsumerState<OrderInfo> {
             spacing: 5,
             children: <Widget> [
               Checkbox(
-                side: BorderSide(color: MaterialTheme.lightScheme().onSurfaceVariant, width: 1.5),
+                side: BorderSide(color: MaterialTheme.lightScheme().onSurface, width: 1.5),
                 activeColor: MaterialTheme.lightScheme().primary,
                 checkColor: Colors.white,
                 onChanged:(bool? value) {
@@ -125,7 +125,7 @@ class _OrderInfoState extends ConsumerState<OrderInfo> {
                         textAlign: TextAlign.justify,
                         text: TextSpan(
                             text: AppLocalizations.of(context)!.agreementStart,
-                            style: agreementTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 16, 'Regular',),
+                            style: agreementTextStyle(MaterialTheme.lightScheme().onSurface, 16, 'Regular',),
                             children: [
                               TextSpan(text: AppLocalizations.of(context)!.agreementEnd,
                                 style: agreementTextStyle(Colors.lightBlue, 16, 'Light',)
@@ -155,7 +155,7 @@ class _OrderInfoState extends ConsumerState<OrderInfo> {
                             ref.read(asyncCartProvider.notifier).deleteAllSeats(0, user!, context);
                           },
                           icon: Icon(CupertinoIcons.delete_simple, size: 40,
-                            color: MaterialTheme.lightScheme().onSurfaceVariant,)//Text(AppLocalizations.of(context)!.clearAllButton, style: customTextStyle(Colors.white, isDesktop ? 20.0 : 18.0, 'Regular'),),
+                            color: MaterialTheme.lightScheme().onSurface,)//Text(AppLocalizations.of(context)!.clearAllButton, style: customTextStyle(Colors.white, isDesktop ? 20.0 : 18.0, 'Regular'),),
                       )
                   ),
                   Expanded(
@@ -271,7 +271,7 @@ class DesktopActionCard extends StatelessWidget {
                       spacing: 5,
                       children: [
                         Icon(Icons.location_on_outlined, size: 18,
-                            color: MaterialTheme.lightScheme().onSurfaceVariant),
+                            color: MaterialTheme.lightScheme().onSurface),
                         Flexible(
                           child: Text(
                             itemWrapper.venueName,
@@ -323,7 +323,7 @@ class MobileActionCard extends StatelessWidget {
               Row(
                 spacing: 3,
                 children: [
-                  Icon(Icons.location_on_outlined, size: 16, color: MaterialTheme.lightScheme().onSurfaceVariant),
+                  Icon(Icons.location_on_outlined, size: 16, color: MaterialTheme.lightScheme().onSurface),
                   Flexible(
                       child: Text(itemWrapper.venueName, textAlign: TextAlign.justify,
                         style: customTextStyle(MaterialTheme.lightScheme().onSurface, 16.0, 'Light'),)
@@ -410,7 +410,7 @@ class _TicketTileState extends ConsumerState<_TicketTile> {
                               spacing: 5,
                               children: [
                                 Icon(CupertinoIcons.calendar, size: 16,
-                                    color: MaterialTheme.lightScheme().onSurfaceVariant),
+                                    color: MaterialTheme.lightScheme().onSurface),
                                 Text('${widget.item.day} ${widget.item.time}',
                                   style: customTextStyle(null, 16.0, 'Regular'),),
                               ],
@@ -459,7 +459,7 @@ class _TicketTileState extends ConsumerState<_TicketTile> {
         Positioned(top:0, right: 0,child: IconButton(
             padding: EdgeInsets.zero,
             icon: Icon(CupertinoIcons.delete_simple, size: 20,
-              color: MaterialTheme.lightScheme().onSurfaceVariant,),
+              color: MaterialTheme.lightScheme().onSurface,),
             onPressed: () {
               User? user = ref.read(asyncUserProvider).value;
               ref.read(asyncCartProvider.notifier).deleteSeat(widget.item.seatId,
@@ -565,7 +565,7 @@ class _VisitorDataFieldsState extends ConsumerState<_VisitorDataFields> {
                       FocusScope.of(context).requestFocus(FocusNode());
                     },
                     controller: _surnameController,
-                    cursorColor: MaterialTheme.lightScheme().onSurfaceVariant,
+                    cursorColor: MaterialTheme.lightScheme().onSurface,
                     decoration: underlinedField(context, AppLocalizations.of(context)!.surnameLabel, 14, Colors.grey.shade50),
                   ),
                 ),
@@ -575,7 +575,7 @@ class _VisitorDataFieldsState extends ConsumerState<_VisitorDataFields> {
                       FocusScope.of(context).requestFocus(FocusNode());
                     },
                     controller: _nameController,
-                    cursorColor: MaterialTheme.lightScheme().onSurfaceVariant,
+                    cursorColor: MaterialTheme.lightScheme().onSurface,
                     decoration: underlinedField(context, AppLocalizations.of(context)!.nameLabel, 14, Colors.grey.shade50),
                   ),
                 ),
@@ -585,7 +585,7 @@ class _VisitorDataFieldsState extends ConsumerState<_VisitorDataFields> {
                       FocusScope.of(context).requestFocus(FocusNode());
                     },
                     controller: _middleNameController,
-                    cursorColor: MaterialTheme.lightScheme().onSurfaceVariant,
+                    cursorColor: MaterialTheme.lightScheme().onSurface,
                     decoration: underlinedField(context, AppLocalizations.of(context)!.middleNameLabel, 14, Colors.grey.shade50),
                   ),
                 ),
@@ -599,7 +599,7 @@ class _VisitorDataFieldsState extends ConsumerState<_VisitorDataFields> {
                     FocusScope.of(context).requestFocus(FocusNode());
                   },
                   controller: _surnameController,
-                  cursorColor: MaterialTheme.lightScheme().onSurfaceVariant,
+                  cursorColor: MaterialTheme.lightScheme().onSurface,
                   decoration: underlinedField(context, AppLocalizations.of(context)!.surnameLabel, 14, Colors.grey.shade50),
                 ),
                 TextField(
@@ -607,7 +607,7 @@ class _VisitorDataFieldsState extends ConsumerState<_VisitorDataFields> {
                     FocusScope.of(context).requestFocus(FocusNode());
                   },
                   controller: _nameController,
-                  cursorColor: MaterialTheme.lightScheme().onSurfaceVariant,
+                  cursorColor: MaterialTheme.lightScheme().onSurface,
                   decoration: underlinedField(context, AppLocalizations.of(context)!.nameLabel, 14, Colors.grey.shade50),
                 ),
                 TextField(
@@ -615,7 +615,7 @@ class _VisitorDataFieldsState extends ConsumerState<_VisitorDataFields> {
                     FocusScope.of(context).requestFocus(FocusNode());
                   },
                   controller: _middleNameController,
-                  cursorColor: MaterialTheme.lightScheme().onSurfaceVariant,
+                  cursorColor: MaterialTheme.lightScheme().onSurface,
                   decoration: underlinedField(context, AppLocalizations.of(context)!.middleNameLabel, 14, Colors.grey.shade50),
                 ),
               ],
@@ -630,7 +630,7 @@ class _VisitorDataFieldsState extends ConsumerState<_VisitorDataFields> {
                       FocusScope.of(context).requestFocus(FocusNode());
                     },
                     controller: _bdController,
-                    cursorColor: MaterialTheme.lightScheme().onSurfaceVariant,
+                    cursorColor: MaterialTheme.lightScheme().onSurface,
                     decoration: underlinedField(context, AppLocalizations.of(context)!.birthLabel, 14, Colors.grey.shade50),
                   )
                 ],
@@ -670,7 +670,7 @@ class _VisitorDataFieldsState extends ConsumerState<_VisitorDataFields> {
                                                   setState((){});
                                                 },
                                                 child: Text(documentTypeMap.values.toList()[index],
-                                                    style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, screenWidth > 1100
+                                                    style: customTextStyle(MaterialTheme.lightScheme().onSurface, screenWidth > 1100
                                                         ? 14.0 : 12.0, 'Regular')),
                                               ),
                                             );
@@ -711,7 +711,7 @@ class _VisitorDataFieldsState extends ConsumerState<_VisitorDataFields> {
                               FocusScope.of(context).requestFocus(FocusNode());
                             },
                             controller: _seriesController,
-                            cursorColor: MaterialTheme.lightScheme().onSurfaceVariant,
+                            cursorColor: MaterialTheme.lightScheme().onSurface,
                             decoration: underlinedField(context,  AppLocalizations.of(context)!.serialLabel, 14, Colors.grey.shade50),
                           ),
                         )
@@ -723,7 +723,7 @@ class _VisitorDataFieldsState extends ConsumerState<_VisitorDataFields> {
                       FocusScope.of(context).requestFocus(FocusNode());
                     },
                     controller: _documentNumberController,
-                    cursorColor: MaterialTheme.lightScheme().onSurfaceVariant,
+                    cursorColor: MaterialTheme.lightScheme().onSurface,
                     decoration: underlinedField(context,  AppLocalizations.of(context)!.numberLabel, 14, Colors.grey.shade50),
                   )
                 ],
