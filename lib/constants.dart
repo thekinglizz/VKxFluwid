@@ -169,7 +169,7 @@ class CartWidgetIcon extends ConsumerWidget {
         .select((selector) => selector.whenData((cb)=>cb.totalSeatsInReserve)));
     final totalSeatsInReserve = uvm;
     return Badge(
-      backgroundColor: Colors.green,
+      backgroundColor: MaterialTheme.lightScheme().primary,
       label: Text((totalSeatsInReserve.value ?? 0).toString(),
         style: TextStyle(color: Colors.white, fontSize: screenWidth > 900 ? 16 : 14),),
       isLabelVisible: (totalSeatsInReserve.value ?? 0) == 0 ? false : true,

@@ -145,7 +145,7 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
     _onScreenSectors = widget.sectorList;
     final siWidth = (widget.siData.schemeSize.width * widget.schemeCoef)/2;
     final siHeight = (widget.siData.schemeSize.height * widget.schemeCoef)/2.5;
-    if (screenWidth > 700){_viewTransformationController.value.translate(390-siWidth, 390-siHeight);}
+    if (screenWidth > 700){_viewTransformationController.value.translate(450-siWidth, 350-siHeight);}
     else {_viewTransformationController.value.translate(screenWidth/2-siWidth, (screenHeight*0.7)/2-siHeight);}
     super.initState();
   }
@@ -166,15 +166,11 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
           return Stack(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
                 child: Container(
                   width: widget.size.x.toDouble(),
                   height: widget.size.y.toDouble(),
-                  decoration: BoxDecoration(
-                    color: const Color(0xffF2F3F5),
-                    border: Border.all(color: Colors.grey.shade300, width: 1.5),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+                  decoration: const BoxDecoration(color: Color(0xffF2F3F5),),
                   child: InteractiveViewer.builder(
                     clipBehavior: Clip.hardEdge,
                     transformationController: _viewTransformationController,
@@ -260,7 +256,6 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
                   ),
                 ),
               ),
-
               buildPositioned(context)
             ],
           );
@@ -271,7 +266,7 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
 
   Positioned buildPositioned(BuildContext context) {
     return Positioned(
-      top: 342.0,
+      top: screenWidth > 700 ? 256.0 : screenWidth/2,
       right: 24.0,
       child: Column(
         spacing: 12,
@@ -293,7 +288,7 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
                     _currentZoom = _viewTransformationController
                         .value.getMaxScaleOnAxis();
                     if (screenWidth > 1100) {
-                      x = const Offset(400, 400);
+                      x = const Offset(450, 350);
                     } else {
                       x = Offset(screenWidth / 2, screenWidth / 2);
                     }
@@ -305,7 +300,7 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
                     _viewTransformationController.value.translate(-dx, -dy);
                     setState(() {});
                   },
-                  icon: Icon(Icons.add, size: 24.0,
+                  icon: Icon(Icons.add, size: 30.0,
                     color: MaterialTheme.lightScheme().onSurface,)),
             ),
           ),
@@ -324,7 +319,7 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
                 _currentZoom = _viewTransformationController
                     .value.getMaxScaleOnAxis();
                 if (screenWidth > 1100) {
-                  x = const Offset(400, 400);
+                  x = const Offset(450, 350);
                 } else {
                   x = Offset(screenWidth / 2, screenWidth / 2);
                 }
@@ -336,7 +331,7 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
                 _viewTransformationController.value.translate(-dx, -dy);
                 setState(() {});
               },
-                  icon: Icon(Icons.remove, size: 24.0,
+                  icon: Icon(Icons.remove, size: 30.0,
                     color: MaterialTheme.lightScheme().onSurface,)),
             ),
           ),
@@ -358,14 +353,14 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
                 final siHeight = (widget.siData.schemeSize.height * widget.schemeCoef)/2.5;
                 if (screenWidth > 700){
                   _viewTransformationController.value
-                      .translate(390-siWidth, 390-siHeight);
+                      .translate(450-siWidth, 350-siHeight);
                 }
                 else {
                   _viewTransformationController.value
                       .translate(screenWidth/2-siWidth, (screenHeight*0.7)/2-siHeight);
                 }
               },
-                  icon: Icon(Icons.center_focus_strong, size: 24.0,
+                  icon: Icon(Icons.center_focus_strong, size: 28.0,
                     color: MaterialTheme.lightScheme().onSurface,)),
             ),
           ),

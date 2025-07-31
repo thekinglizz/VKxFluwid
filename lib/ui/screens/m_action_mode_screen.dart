@@ -28,7 +28,7 @@ class MobileSchemeScreen extends ConsumerWidget {
     final scheme = ref.watch(asyncSchemeProvider);
     
     return Scaffold(
-      backgroundColor: const Color(0xfff2f3f5),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: MaterialTheme.lightScheme().surfaceContainerLowest,
         surfaceTintColor: MaterialTheme.lightScheme().surfaceContainerLowest,
@@ -78,16 +78,10 @@ class MobileSchemeScreen extends ConsumerWidget {
         leading: IconButton(onPressed: () {Navigator.pop(context);},
           icon: Icon(CupertinoIcons.arrow_left, size: 30, color: MaterialTheme.lightScheme().primary,),),
       ),
-      body: ListView(
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          const SizedBox(height: 8,),
-          //Зона отображения данных о сеансе
-          scheme.when(
-              data: (data){return MobileSchemeArea(data: data);},
-              error: (error, trace){return ErrorScreen(error: error.toString(),);},
-              loading: (){return const SizedBox.shrink();}),],
-      ),
+      body: scheme.when(
+          data: (data){return MobileSchemeArea(data: data);},
+          error: (error, trace){return ErrorScreen(error: error.toString(),);},
+          loading: (){return const SizedBox.shrink();}),
       bottomSheet: scheme.when(
           data: (data){
             if (scheme.isRefreshing){
@@ -97,7 +91,8 @@ class MobileSchemeScreen extends ConsumerWidget {
             }
             return data.selectedSeats.isNotEmpty ? FluwidBottomSheet(data: data) : null;},
           error: (error, trace){return ErrorScreen(error: error.toString(),);},
-          loading: (){return ColoredBox(color: const Color(0xfff2f3f5),
+          loading: (){return ColoredBox(
+              color: Colors.white,
               child: Center(child: CircularProgressIndicator(
                 color: MaterialTheme.lightScheme().primary,
               ),));}
@@ -113,41 +108,26 @@ class MobileSchemeArea extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final ScrollController scrollController = ScrollController();
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-      ),
-      margin: EdgeInsets.zero,
-      child: Column(
-        spacing: 10,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(height: 5,),
-          //Категории
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Flexible(
-                child: SizedBox(
-                  height : 50.0,
-                  child: ListView(
-                    controller: scrollController,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    children: data.schemeData.categoryInfoWidgetList,
-                  ),
-                ),
-              ),
-            ],
+    return Stack(
+      children: [
+        //Схема
+        SchemeViewer(size: data.schemeData.ivSize, sectorList: data.schemeData.sectorList,
+          schemeCoef: data.schemeData.schemeCoef, siData: data.schemeData.siData,),
+        //Категории
+        Positioned(
+          top: 24,
+          left: 1,
+          right: 1,
+          child: SizedBox(
+            height : 50.0,
+            child: ListView(
+              controller: scrollController,
+              scrollDirection: Axis.horizontal,
+              children: data.schemeData.categoryInfoWidgetList,
+            ),
           ),
-          //Схема
-          SchemeViewer(size: data.schemeData.ivSize, sectorList: data.schemeData.sectorList,
-            schemeCoef: data.schemeData.schemeCoef, siData: data.schemeData.siData,),
-        ],
-      ),
+        )
+      ],
     );
   }
 }
@@ -170,11 +150,11 @@ class FluwidBottomSheet extends ConsumerWidget {
               topLeft: Radius.circular(12)),
           child: Container(
             height: 150,
-            color: darken(const Color(0xfff2f3f5), 0.06),
+            color: darken(const Color(0xfff2f3f5), 0.05),
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: Column(
-                spacing: 5,
+                spacing: 8,
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -189,7 +169,7 @@ class FluwidBottomSheet extends ConsumerWidget {
                               14.0, 'Regular').copyWith(fontWeight: FontWeight.w800)
                       )
                   ),
-                  SizedBox(height: 70,
+                  SizedBox(height: 55,
                       width: MediaQuery.of(context).size.width,
                       child: ListView(
                         controller: controller,
@@ -198,7 +178,7 @@ class FluwidBottomSheet extends ConsumerWidget {
                       )
                   ),
                   SizedBox(
-                    height: 33,
+                    height: 40,
                     width: MediaQuery.of(context).size.width,
                     child: FilledButton(
                       style: customRoundedBorderStyle(MaterialTheme.lightScheme().primary),
@@ -244,53 +224,72 @@ class ReservedCard extends ConsumerWidget {
       } else {return seatInfo.category.price;}
     }
     return Padding(
-      padding: const EdgeInsets.only(right: 4),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: MaterialTheme.lightScheme().primary),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                spacing: 2,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Flexible(
-                    child: Text("${AppLocalizations.of(context)!.sector}: ${seatInfo.bil24seatObj.sector}",
-                        style: customTextStyle(MaterialTheme.lightScheme().onSurface, 12, 'Regular')),
-                  ),
-                  Flexible(
-                    child: Text('${AppLocalizations.of(context)!.row}: ${seatInfo.bil24seatObj.row}, '
-                        '${AppLocalizations.of(context)!.number}: ${seatInfo.bil24seatObj.number}',
-                      style: customTextStyle(MaterialTheme.lightScheme().onSurface, 12, 'Regular'),),
-                  ),
-                  if ((seatWithTariffs.isNotEmpty && seatWithTariffs.containsKey(seatInfo))
-                      || seatInfo.category.tariffIdMap.isEmpty) Text('${getPrice(seatInfo)} $currency',
-                      style: customTextStyle(MaterialTheme.lightScheme().onSurface, 12, 'Regular')
-                          .copyWith(fontWeight: FontWeight.bold)
-                  ),
-                ],
-              ),
-              const SizedBox(width: 5,),
-              Align(
-                alignment: Alignment.topCenter,
-                child: GestureDetector(
-                    onTap: (){
-                      if (ref.read(asyncSchemeProvider).value!.selectedTariffSeats.containsKey(seatInfo)){
-                        unreserveSeatHelper(ref, seatInfo,
-                            seatInfo.category.tariffIdMap[ref.read(asyncSchemeProvider)
-                              .value!.selectedTariffSeats[seatInfo]]);
-                    } else {unreserveSeatHelper(ref, seatInfo, null);}},
-                    child: Icon(CupertinoIcons.delete, size: 18,
-                      color: MaterialTheme.lightScheme().primary,)),
-              )
-            ],
+      padding: const EdgeInsets.only(right: 8),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minWidth: 133.0),
+        child: Container(
+          height: 50,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: MaterialTheme.lightScheme().outlineVariant, width: 0.5),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Column(
+                  spacing: 2,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    /*Flexible(
+                      child: Text("${AppLocalizations.of(context)!.sector}: ${seatInfo.bil24seatObj.sector}",
+                          style: customTextStyle(MaterialTheme.lightScheme().onSurface, 12, 'Regular')),
+                    ),*/
+
+                    Flexible(
+                      child: Text(' ${seatInfo.bil24seatObj.row} ${AppLocalizations.of(context)!.row.toLowerCase()}, '
+                          '${seatInfo.bil24seatObj.number} ${AppLocalizations.of(context)!.number.toLowerCase()}',
+                        style: customTextStyle(MaterialTheme.lightScheme().onSurface, 12, 'Regular')
+                            .copyWith(fontWeight: FontWeight.bold),),
+                    ),
+                    if ((seatWithTariffs.isNotEmpty && seatWithTariffs.containsKey(seatInfo))
+                        || seatInfo.category.tariffIdMap.isEmpty)
+                      Row(
+                        spacing: 8,
+                        children: [
+                          Container(
+                            height: 10,
+                            width: 10,
+                            decoration: BoxDecoration(
+                              color: seatInfo.category.color,
+                              borderRadius: BorderRadius.circular(50.0),
+                            ),),
+                          Text('${getPrice(seatInfo)} $currency',
+                              style: customTextStyle(MaterialTheme
+                                  .lightScheme().onSurfaceVariant, 12, 'Regular')),
+                        ],
+                      ),
+                  ],
+                ),
+                const SizedBox(width: 5,),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                      onTap: (){
+                        if (ref.read(asyncSchemeProvider).value!.selectedTariffSeats.containsKey(seatInfo)){
+                          unreserveSeatHelper(ref, seatInfo,
+                              seatInfo.category.tariffIdMap[ref.read(asyncSchemeProvider)
+                                .value!.selectedTariffSeats[seatInfo]]);
+                      } else {unreserveSeatHelper(ref, seatInfo, null);}},
+                      child: Icon(Icons.close_rounded, size: 14,
+                        color: MaterialTheme.lightScheme().outline,)),
+                )
+              ],
+            ),
           ),
         ),
       ),

@@ -445,7 +445,7 @@ class _Header extends ConsumerWidget {
           ),
         ),*/
         if (aEvent.schemeType == SchemeType.mixed) ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 800),
+          constraints: const BoxConstraints(maxWidth: 900),
           child:  Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -629,18 +629,18 @@ class _Body extends ConsumerWidget {
     //Map<String, List<dynamic>> dateMap = ref.read(asyncActionProvider).value!.actionEventsGroupedByDate;
     //DateTime? selectedDate = ref.read(asyncActionProvider).value!.selectedDate;
     return  SizedBox(
-      width: 800,
+      width: 900,
       child: Column(
         children: [
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.white,
-              //border: Border.all(color: MaterialTheme.lightScheme().outlineVariant, width: 1.2),
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+              border: Border.all(color: MaterialTheme.lightScheme().outlineVariant, width: 0.5),
+              borderRadius: const BorderRadius.all(Radius.circular(20)),
             ),
             margin: const EdgeInsets.all(0),
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 0.0),
               child: buildBodyEventData(aEvent, context, venue.venueName, actionAge),
             ),
           ),
@@ -726,13 +726,19 @@ class SchemeArea extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final scheme = ref.watch(asyncSchemeProvider);
     final ScrollController scrollController = ScrollController();
+
     return scheme.when(
         data: (data){
           if (scheme.isRefreshing){
-            return SizedBox(width: 800.0,
+            return SizedBox(width: 900.0,
                 child: Center(child: CircularProgressIndicator(
                   color: MaterialTheme.lightScheme().primary,)));
           }
+
+          ScrollController reservedCardsController = ScrollController();
+          List<ReservedCard> reservedList = [];
+          reservedList = data.selectedSeats.map((e) => ReservedCard(seatInfo: e,
+            currency: data.schemeData.currency, seatWithTariffs: data.selectedTariffSeats,)).toList();
           return Column(
             spacing: 10,
             mainAxisSize: MainAxisSize.min,
@@ -756,8 +762,8 @@ class SchemeArea extends ConsumerWidget {
                         children: [
                           if (data.schemeData.categoryInfoWidgetList.length > 5)
                             Container(
-                              width: 32.0,
-                              height: 32.0,
+                              width: 40.0,
+                              height: 40.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 shape: BoxShape.rectangle,
@@ -778,7 +784,7 @@ class SchemeArea extends ConsumerWidget {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: SizedBox(
-                                height : 50.0,
+                                height: 55.0,
                                 child: ListView(
                                   controller: scrollController, shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
@@ -789,8 +795,8 @@ class SchemeArea extends ConsumerWidget {
                           ),
                           if (data.schemeData.categoryInfoWidgetList.length > 5)
                             Container(
-                              width: 32.0,
-                              height: 32.0,
+                              width: 40.0,
+                              height: 40.0,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 shape: BoxShape.rectangle,
@@ -810,21 +816,28 @@ class SchemeArea extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  //Кнопка перехода к корзине
+                  //Футер для перехода к корзине
                   if (data.selectedSeats.isNotEmpty && totalSum.value > 0)
                     Positioned(
-                      bottom: 16,
-                      right: 16,
+                      bottom: 0,
+                      right: 0,
                       child: SizedBox(
-                        child: Card(
-                          elevation: 4,
-                          color: Colors.white,
+                        width: 900,
+                        height: 86,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: MaterialTheme.lightScheme().outlineVariant, width: 0.3),
+                            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
+                          ),
+                          margin: EdgeInsets.zero,
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              spacing: 8,
                               children: [
-                                Column(
+                               /* Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text('${data.selectedSeats
@@ -835,17 +848,75 @@ class SchemeArea extends ConsumerWidget {
                                     Text('${totalSum.value} ${data.schemeData.currency}',
                                       style: customTextStyle(null, 18, 'Light'),)
                                   ],
+                                ),*/
+                                if (reservedList.length > 5)
+                                  Container(
+                                    width: 32.0,
+                                    height: 50.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.rectangle,
+                                      border: Border.all(color: MaterialTheme.lightScheme().outlineVariant, width: 0.5),
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    child: IconButton(
+                                        padding: const EdgeInsets.all(1.0),
+                                        color: MaterialTheme.lightScheme().onSurface,
+                                        iconSize: 18.0,
+                                        onPressed: (){
+                                          reservedCardsController.animateTo(reservedCardsController.offset - 200,
+                                              duration: const Duration(milliseconds: 300),
+                                              curve: Curves.easeInOut);
+                                        }, icon: const Icon(Icons.arrow_back_ios_new,)),
+                                  ),
+                                Flexible(
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    controller: reservedCardsController,
+                                    scrollDirection: Axis.horizontal,
+                                    children: reservedList,
+                                  ),
                                 ),
-                                const SizedBox(width: 10.0,),
-                                SizedBox(
-                                  height: 40,
-                                  child: FloatingActionButton.extended(
-                                    elevation: 0,
-                                    backgroundColor: Colors.green,
-                                    onPressed: (){buildShowModalCart(context);},
-                                    label: Text(AppLocalizations.of(context)!.goToCartLabel,
-                                        style: customTextStyle(Colors.white, 16, 'Regular')),),
+                                if (reservedList.length > 5)
+                                  Container(
+                                    width: 32.0,
+                                    height: 50.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.rectangle,
+                                      border: Border.all(color: MaterialTheme.lightScheme().outlineVariant, width: 0.5),
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    child: IconButton(
+                                        padding: const EdgeInsets.all(1.0),
+                                        color: MaterialTheme.lightScheme().onSurface,
+                                        iconSize: 18.0,
+                                        onPressed: (){
+                                          reservedCardsController.animateTo(reservedCardsController.offset + 300,
+                                              duration: const Duration(milliseconds: 300),
+                                              curve: Curves.easeInOut);
+                                        }, icon: const Icon(Icons.arrow_forward_ios_rounded,)),
+                                  ),
+                                Row(
+                                  spacing: 8,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    VerticalDivider(color: Colors.grey.shade300,),
+                                    SizedBox(
+                                      height: 50,
+                                      child: FloatingActionButton.extended(
+                                        elevation: 0,
+                                        backgroundColor: MaterialTheme.lightScheme().primary,
+                                        onPressed: (){buildShowModalCart(context);},
+                                        label: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text('${AppLocalizations.of(context)!.buyLabel} ${totalSum.value} ${data.schemeData.currency}',
+                                              style: customTextStyle(Colors.white, 14, 'Regular')),
+                                        ),),
+                                    ),
+                                  ],
                                 )
+
                               ],),
                           ),
                         ),
@@ -860,7 +931,7 @@ class SchemeArea extends ConsumerWidget {
           return const ErrorScreen(error: 'Error');
         },
         loading: (){
-          return SizedBox(width: 800.0, height: 100.0,
+          return SizedBox(width: 900.0, height: 100.0,
               child: Center(child: CircularProgressIndicator(
                   color:MaterialTheme.lightScheme().primary)));
         });

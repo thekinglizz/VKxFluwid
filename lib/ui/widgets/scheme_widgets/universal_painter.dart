@@ -110,14 +110,14 @@ class UniversalPainter extends CustomPainter{
             if (sector.seatList[i].category == categoryFilter){
               seatColor = sector.seatList[i].category.color;
             } else {
-              seatColor = Colors.black;
+              seatColor = Colors.grey;
             }
           }
           else {
             seatColor = sector.seatList[i].category.color;
           }
         }
-        else {seatColor = Colors.black;}
+        else {seatColor = Colors.grey;}
 
         if (seatMode == "theatre"){
           final icon = ((sector.seatList[i].available && categoryFilter == null)
@@ -133,11 +133,9 @@ class UniversalPainter extends CustomPainter{
               sector.seatList[i].bil24seatObj.y-localRadius));
         } else {
           canvas.drawCircle(Offset(sector.seatList[i].bil24seatObj.x,
-              sector.seatList[i].bil24seatObj.y), localRadius, Paint()
+              sector.seatList[i].bil24seatObj.y), sector.seatList[i].available ? localRadius : localRadius*0.3, Paint()
             ..color = seatColor
-            ..style = seatColor != Colors.black
-                ? PaintingStyle.fill
-                : PaintingStyle.stroke
+            ..style = PaintingStyle.fill
             ..strokeWidth = stroke);
         }
       }
@@ -158,12 +156,12 @@ class UniversalPainter extends CustomPainter{
 
     canvas.drawCircle(Offset(coordinates.x.toDouble(),
         coordinates.y.toDouble()), radius*0.8, Paint()
-      ..color = Colors.green
+      ..color = const Color(0xff007fff)
       ..style = PaintingStyle.fill);
 
     canvas.drawCircle(Offset(coordinates.x.toDouble(),
         coordinates.y.toDouble()), radius*1.4, Paint()
-      ..color = Colors.green
+      ..color = const Color(0xff007fff)
       ..style = PaintingStyle.stroke
       ..strokeWidth = radius*0.3);
   }

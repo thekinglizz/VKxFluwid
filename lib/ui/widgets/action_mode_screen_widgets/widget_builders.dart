@@ -29,27 +29,26 @@ Widget buildBodyEventData(ActionEvent actionEvent, BuildContext context, String 
       return Column(
         spacing: 16,
         children: [
-          if (actionEvent.schemeType == SchemeType.assignedSeats && date !="off")
-            Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
             child: Row(
               spacing: 8,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(actionEvent.vkDate,
-                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular'),),
+                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 16, 'Regular'),),
                 Text(actionEvent.time,
-                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular'),),
+                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 16, 'Regular'),),
                 Text("•",
-                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular'),),
+                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 16, 'Regular'),),
                 Flexible(
                   child: Text(venueName, maxLines: 1, overflow: TextOverflow.ellipsis,
-                    style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular'),),
+                    style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 16, 'Regular'),),
                 ),
                 Text("•",
-                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular'),),
+                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 16, 'Regular'),),
                 Text(actionAge,
-                  style: customTextStyle(MaterialTheme.lightScheme().onSurfaceVariant, 14, 'Regular'),),
+                  style: customTextStyle(MaterialTheme.lightScheme().error, 16, 'Regular'),),
               ],
             ),
           ),
@@ -58,7 +57,7 @@ Widget buildBodyEventData(ActionEvent actionEvent, BuildContext context, String 
       );
     default:
       return SizedBox(
-        width: 800,
+        width: 900,
         child: Center(
           child: Text(AppLocalizations.of(context)!.emptyGA,
             style: customTextStyle(MaterialTheme.lightScheme().onSurface, 20, 'Light'), ),
