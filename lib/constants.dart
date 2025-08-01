@@ -41,6 +41,16 @@ dynamic seatMode;
 dynamic sectorName;
 dynamic hull;
 
+// Параметры от VK
+dynamic extraVkPlatform;
+dynamic interactionId;
+dynamic extraSessionId;
+dynamic extraUnixTimeClick;
+dynamic extraPlatform;
+dynamic utmSource;
+dynamic utmCampaign;
+dynamic utmMedium;
+
 // Нотифаеры для элементов главного экрана
 final ValueNotifier<ScrollPhysics> physics = ValueNotifier<ScrollPhysics>
   (const AlwaysScrollableScrollPhysics()); // Для отключения скролла всего экрана при работе со схемами

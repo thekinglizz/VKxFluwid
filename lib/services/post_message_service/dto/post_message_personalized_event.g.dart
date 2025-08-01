@@ -43,7 +43,8 @@ PostMessageExtraUser _$PostMessageExtraUserFromJson(
       email: json['email'] as String?,
       phone: json['phone'] as String?,
       vkid: json['vk_id'] as String?,
-      uuid: json['uuid'] as String?,
+      uuid: json['uuid'] as String,
+      okid: json['ok_id'] as String?,
     );
 
 Map<String, dynamic> _$PostMessageExtraUserToJson(
@@ -53,5 +54,6 @@ Map<String, dynamic> _$PostMessageExtraUserToJson(
       'email': instance.email,
       'phone': instance.phone,
       'vk_id': instance.vkid,
+      'ok_id': instance.okid,
       'uuid': instance.uuid,
     };

@@ -90,6 +90,7 @@ class SVMState extends AsyncNotifier<SchemeViewModel> {
     return SchemeRepository()
         .getSchemeViewModel(action as ActionViewModel)
         .then((_) {
+      // TODO --> Move to 'start'
       ref.read(postMessageProvider).post(PostMessageLoadedEvent());
       return _;
     });

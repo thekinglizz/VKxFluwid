@@ -3,13 +3,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'response_dto.g.dart';
 
 @JsonSerializable()
-class ReponseDTOAuth {
+class ResponseDTOAuth {
   final String token;
 
-  ReponseDTOAuth({required this.token});
+  ResponseDTOAuth({required this.token});
 
-  factory ReponseDTOAuth.fromJson(Map<String, dynamic> json) =>
-      _$ReponseDTOAuthFromJson(json);
-      
-  Map<String, dynamic> toJson() => _$ReponseDTOAuthToJson(this);
+  factory ResponseDTOAuth.fromJson(Map<String, dynamic> json) =>
+      _$ResponseDTOAuthFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ResponseDTOAuthToJson(this);
 }

@@ -1,4 +1,5 @@
 // Personalized Post Message
+import 'package:flapp_widget/services/api_service/dto/request_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'post_message_personalized_event.g.dart';
@@ -44,6 +45,7 @@ class PostMessageExtraUser {
     required this.phone,
     required this.vkid,
     required this.uuid,
+    required this.okid,
   });
 
   final String? name;
@@ -51,10 +53,24 @@ class PostMessageExtraUser {
   final String? phone;
   @JsonKey(name: 'vk_id')
   final String? vkid;
-  final String? uuid;
+  @JsonKey(name: 'ok_id')
+  final String? okid;
+  final String uuid;
 
   factory PostMessageExtraUser.fromJson(Map<String, dynamic> json) =>
       _$PostMessageExtraUserFromJson(json);
 
   Map<String, dynamic> toJson() => _$PostMessageExtraUserToJson(this);
+
+  String get priorityId {
+    if (vkid != null) return vkid!;
+    if (okid != null) return okid!;
+    return uuid;
+  }
+
+  RequestDtoProviderIdType get priorityIdType {
+    if (vkid != null) return RequestDtoProviderIdType.vkid;
+    if (okid != null) return RequestDtoProviderIdType.okid;
+    return RequestDtoProviderIdType.uuid;
+  }
 }

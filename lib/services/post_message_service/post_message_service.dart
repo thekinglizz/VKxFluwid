@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'dart:js_interop';
+import 'package:flapp_widget/services/api_service/authorization_service.dart';
+import 'package:flapp_widget/services/api_service/dto/request_dto.dart';
 import 'package:flapp_widget/services/post_message_service/dto/post_message_personalized_event.dart';
 import 'package:flapp_widget/services/post_message_service/post_message_events.dart';
 import 'package:flapp_widget/services/post_message_service/widget_settings_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web/web.dart' as web;
 
 //JS Methods
@@ -25,7 +28,8 @@ class PostMessageService {
   PostMessageService({
     required Ref ref,
     required String targetOrigin,
-  })  : _targetOrigin = targetOrigin, _ref = ref {
+  })  : _targetOrigin = targetOrigin,
+        _ref = ref {
     // link _messageListener to JS method
     _postMessageFromJS = _onMessageReceived.toJS;
 
@@ -62,7 +66,7 @@ class PostMessageService {
   // ON Recieved message
   void _onReceivePeronalizedEvent({
     required PostMessagePersonalizedEvent event,
-  }) {
+  }) async {
     web.window.alert(
       "Received Personalized Event:\n"
       "userExtra: ${event.extraUser}\n"
@@ -72,5 +76,59 @@ class PostMessageService {
     _ref.read(widgetSettingsProvider.notifier).state = WidgetSettings(
       needCloseButton: event.widgetSettings.needCloseButton ?? false,
     );
+
+    // Authorization processing
+    final token = await AuthService.checkJwt(event.extraUser);
+    if (token == null) {
+      final RequestDTOAuth data = RequestDTOAuth(
+        userPayload: RequestDTOUserData(
+          providerId: event.extraUser.priorityId,
+          providerIdType: event.extraUser.priorityIdType,
+          ipAddress: ipAddress,
+          userAgent: userAgent,
+        ),
+        actionEventPayload: RequestDTOActionEventData(
+          actionCoreId: actionCoreId,
+          actionName: actionName,
+          actionEventDateStart: actionEventDateStart,
+          actionEventDateEnd: actionEventDateEnd,
+          actionEventCoreId: actionEventCoreId,
+          ageCategory: ageCategory,
+          actionCategoryName: actionCategoryName,
+          venueCoreId: venueCoreId,
+          venueName: venueName,
+          address: address,
+          timeZone: timeZone,
+          hallName: hallName,
+          organizatorName: organizatorName,
+          organizatorAddress: organizatorAddress,
+          organizatorInn: organizatorInn,
+        ),
+        widgetPayload: RequestDTOWidgetData(
+          widgetId: widgetId,
+          widgetTitle: widgetTitle,
+          widgetReferer: widgetReferer,
+          widgetUrl: widgetUrl,
+          utmSource: 1,
+          utmMedium: 1,
+          utmCampaign: 1,
+          utmTerm: 1,
+          utmContent: 1,
+        ),
+      );
+
+      AuthService.jwt = (await AuthService.login(data: data)).token;
+    }
+
+    // get token if authorized before
+    if (token != null) {
+      AuthService.jwt = token;
+    }
+
+    await Future.delayed(const Duration(seconds: 3));
+
+    final ls = await SharedPreferences.getInstance();
+    web.window.alert("Keys in local storage : ${ls.getKeys()}");
+    web.window.alert("token : $token");
   }
 }

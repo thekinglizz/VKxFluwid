@@ -6,12 +6,12 @@ part of 'response_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ReponseDTOAuth _$ReponseDTOAuthFromJson(Map<String, dynamic> json) =>
-    ReponseDTOAuth(
+ResponseDTOAuth _$ResponseDTOAuthFromJson(Map<String, dynamic> json) =>
+    ResponseDTOAuth(
       token: json['token'] as String,
     );
 
-Map<String, dynamic> _$ReponseDTOAuthToJson(ReponseDTOAuth instance) =>
+Map<String, dynamic> _$ResponseDTOAuthToJson(ResponseDTOAuth instance) =>
     <String, dynamic>{
       'token': instance.token,
     };

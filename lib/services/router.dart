@@ -46,6 +46,16 @@ setGlobalUriParams(Uri url){
     sectorName = 'off';
   }
 
+  // Параметры от VK
+  extraVkPlatform = url.queryParameters["extra_vkplatform"];
+  interactionId = url.queryParameters["interaction_id"];
+  extraSessionId = url.queryParameters["extra_session_id"];
+  extraUnixTimeClick = url.queryParameters["extra_unixtime_click"];
+  extraPlatform = url.queryParameters["extra_platform"];
+  utmSource = url.queryParameters["utm_source"];
+  utmCampaign = url.queryParameters["utm_campaign"];
+  utmMedium = url.queryParameters["utm_medium"];
+
   //print("$fid, $token, $actionId, $cityId, $failUrl, $successUrl, $port, $zone, "
     //"$calendar, $hint, $agreement, $date, $available, $promo, $stageRender, $schemeStyle");
 }
