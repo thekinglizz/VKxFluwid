@@ -218,7 +218,7 @@ class _OtpWidgetState extends ConsumerState<OtpWidget> {
       setState(() {});
     } else {
       final user = await UserAPI.confirmEmail(_otpEditingController.value.text, widget.user);
-      if (user != null) {
+      if (user is User) {
         ref.read(asyncUserProvider.notifier).saveUser(user);
         _hasError = false;
       } else {

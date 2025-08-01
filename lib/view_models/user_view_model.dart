@@ -119,7 +119,7 @@ class UserState extends AsyncNotifier<User> {
     // Если пользователь сохранен в localstorage
     if (loadedUserFromRepo.userId > 0 && loadedUserFromRepo.sessionId != '') {
       seatsInReserve = await UserAPI.getUserInfo(loadedUserFromRepo);
-      if (seatsInReserve != null) {
+      if (seatsInReserve is int) {
         tempUser = User(
             userId: loadedUserFromRepo.userId,
             sessionId: loadedUserFromRepo.sessionId,
@@ -150,7 +150,7 @@ class UserState extends AsyncNotifier<User> {
           state: UserStates.unknown);
       seatsInReserve = await UserAPI.getUserInfo(hardCodedUser);
 
-      if (seatsInReserve != null) {
+      if (seatsInReserve is int) {
         tempUser = User(
           userId: hardCodedUser.userId,
           sessionId: hardCodedUser.sessionId,

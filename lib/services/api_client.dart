@@ -13,34 +13,28 @@ import '../models/scheme_models/assigned_seats_model.dart';
 import '../models/user.dart';
 
 class PlatformAPI {
-  static Future<http.Response> platformResponse({
-    Map<String, dynamic> body = const {},
-    required String command,
-  }) async =>
-      http.post(
-        Uri.parse(port),
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode({
-          'fid': fid,
-          'token': token,
-          'command': command,
-          ...body,
-        }),
-      );
+  static Future<http.Response> platformResponse(
+      Map<String, dynamic> body) async {
+    return http.post(
+      Uri.parse(port),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(body),
+    );
+  }
 }
 
 class ActionAPI extends PlatformAPI {
-  static Future<Action?> chkConnection() async {
+  static Future<dynamic> chkConnection() async {
     try {
-      final chkResponse = await PlatformAPI.platformResponse(
-        command: 'GET_ACTION_EXT',
-        body: {
-          'cityId': cityId,
-          'actionId': actionId,
-        },
-      ).timeout(const Duration(seconds: 3));
+      final chkResponse = await PlatformAPI.platformResponse(<String, dynamic>{
+        'fid': fid,
+        'token': token,
+        'command': 'GET_ACTION_EXT',
+        'cityId': cityId,
+        'actionId': actionId,
+      }).timeout(const Duration(seconds: 3));
       if (chkResponse.statusCode == 200) {
         print("GET_ACTION_EXT");
         String data = chkResponse.body;
@@ -50,56 +44,7 @@ class ActionAPI extends PlatformAPI {
         }
         Action action =
             Action.fromJson((jsonResponse as Map<String, dynamic>)["action"]);
-        if (action.venueList.isNotEmpty) {
-          for (var venue in action.venueList) {
-            //удаляем пустые сеансы
-            if (venue.actionEventList
-                .any((element) => element.categoryLimitList.isNotEmpty)) {
-              venue.actionEventList.removeWhere((element) =>
-                  element.categoryLimitList.isEmpty &&
-                  element.placementUrl == null);
-            }
-          }
-          return action;
-        }
-      }
-      return null;
-    } on TimeoutException catch (e) {
-      print('Timeout Error: $e');
-      if (port.contains('bil24')) {
-        switch (zone) {
-          case 'test':
-            port = 'https://api2.bil24.pro:1240/json';
-          case 'real':
-            port = 'https://api2.bil24.pro/json';
-        }
-      }
-      return null;
-    }
-  }
-
-  static Future<Action> fetchAction() async {
-    final chk = await chkConnection();
-    if (chk != null) {
-      return chk;
-    }
-    final response = await PlatformAPI.platformResponse(
-      command: 'GET_ACTION_EXT',
-      body: {
-        'cityId': cityId,
-        'actionId': actionId,
-      },
-    );
-    if (response.statusCode == 200) {
-      print("GET_ACTION_EXT RETRY");
-      String data = response.body;
-      var jsonResponse = jsonDecode(data);
-      if (jsonResponse['resultCode'] != 0) {
-        actionError = jsonResponse['description'];
-      }
-      Action action = Action.fromJson(
-          (jsonDecode(response.body) as Map<String, dynamic>)["action"]);
-      if (action.venueList.isNotEmpty) {
+        if (action.venueList.isEmpty) return "empty";
         for (var venue in action.venueList) {
           //удаляем пустые сеансы
           if (venue.actionEventList
@@ -111,15 +56,66 @@ class ActionAPI extends PlatformAPI {
         }
         return action;
       }
+    } on TimeoutException catch (e) {
+      print('Timeout Error: $e');
+      if (port.contains('bil24')) {
+        switch (zone) {
+          case 'test':
+            port = 'https://api2.bil24.pro:1240/json';
+          case 'real':
+            port = 'https://api2.bil24.pro/json';
+        }
+      }
+      return false;
     }
-    throw Exception('Failed to get GET_ACTION_EXT response.');
+  }
+
+  static Future<dynamic> fetchAction() async {
+    final chk = await chkConnection();
+    if (chk is Action) {
+      return chk;
+    }
+    if (chk is bool) {
+      final response = await PlatformAPI.platformResponse(<String, dynamic>{
+        'fid': fid,
+        'token': token,
+        'command': 'GET_ACTION_EXT',
+        'cityId': cityId,
+        'actionId': actionId,
+      });
+      if (response.statusCode == 200) {
+        print("GET_ACTION_EXT RETRY");
+        String data = response.body;
+        var jsonResponse = jsonDecode(data);
+        if (jsonResponse['resultCode'] != 0) {
+          actionError = jsonResponse['description'];
+        }
+        Action action = Action.fromJson(
+            (jsonDecode(response.body) as Map<String, dynamic>)["action"]);
+        if (action.venueList.isEmpty) return "empty";
+        for (var venue in action.venueList) {
+          //удаляем пустые сеансы
+          if (venue.actionEventList
+              .any((element) => element.categoryLimitList.isNotEmpty)) {
+            venue.actionEventList.removeWhere((element) =>
+                element.categoryLimitList.isEmpty &&
+                element.placementUrl == null);
+          }
+        }
+        return action;
+      } else {
+        throw Exception('Failed to get GET_ACTION_EXT response.');
+      }
+    }
   }
 
   static Future fetchScheme(int actionEventId) async {
-    final response = await PlatformAPI.platformResponse(
-      command: 'GET_SCHEMA',
-      body: {'actionEventId': actionEventId},
-    );
+    final response = await PlatformAPI.platformResponse(<String, dynamic>{
+      'fid': fid,
+      'token': token,
+      'command': 'GET_SCHEMA',
+      'actionEventId': actionEventId
+    });
     if (response.statusCode == 200) {
       String data = response.body;
       var jsonResponse = jsonDecode(data);
@@ -131,13 +127,13 @@ class ActionAPI extends PlatformAPI {
   }
 
   static Future fetchSeatList(int actionEventId) async {
-    final response = await PlatformAPI.platformResponse(
-      command: 'GET_SEAT_LIST',
-      body: <String, dynamic>{
-        'actionEventId': actionEventId,
-        'availableOnly': false
-      },
-    );
+    final response = await PlatformAPI.platformResponse(<String, dynamic>{
+      'fid': fid,
+      'token': token,
+      'command': 'GET_SEAT_LIST',
+      'actionEventId': actionEventId,
+      'availableOnly': false
+    });
     if (response.statusCode == 200) {
       String data = response.body;
       var jsonResponse = jsonDecode(data);
@@ -161,23 +157,23 @@ class ActionAPI extends PlatformAPI {
     return parsedData;
   }
 
-  static Future<bool> checkKDP(int tempAccessCode) async {
-    final successAuth = await PlatformAPI.platformResponse(command: 'AUTH');
+  static Future<dynamic> checkKDP(int tempAccessCode) async {
+    final successAuth = await PlatformAPI.platformResponse(
+        <String, dynamic>{'fid': fid, 'token': token, 'command': 'AUTH'});
     if (successAuth.statusCode == 200) {
-      final verification = await PlatformAPI.platformResponse(
-        command: 'CHECK_KDP',
-        body: {
-          'kdp': tempAccessCode,
-          'actionId': actionId,
-          'userId': jsonDecode(successAuth.body)['userId'],
-          'sessionId': jsonDecode(successAuth.body)['sessionId'],
-        },
-      );
+      final verification = await PlatformAPI.platformResponse(<String, dynamic>{
+        'fid': fid,
+        'token': token,
+        'command': 'CHECK_KDP',
+        'kdp': tempAccessCode,
+        'actionId': actionId,
+        'userId': jsonDecode(successAuth.body)['userId'],
+        'sessionId': jsonDecode(successAuth.body)['sessionId'],
+      });
       if (verification.statusCode == 200) {
         final result = jsonDecode(verification.body);
         if (result['resultCode'] == 0) {
           accessCodeNotifier.value = tempAccessCode;
-          return true;
         } else {
           return false;
         }
@@ -199,7 +195,8 @@ class UserAPI extends PlatformAPI {
       totalSeatsInReserve: 0);
 
   static Future<int> auth(WidgetRef ref, String email) async {
-    final response = await PlatformAPI.platformResponse(command: 'AUTH');
+    final response = await PlatformAPI.platformResponse(
+        <String, dynamic>{'fid': fid, 'token': token, 'command': 'AUTH'});
     if (response.statusCode == 200) {
       String data = response.body;
       var jsonResponse = jsonDecode(data);
@@ -219,14 +216,14 @@ class UserAPI extends PlatformAPI {
   static bindEmail(WidgetRef ref, String email) async {
     int successAuth = await auth(ref, email);
     if (successAuth == 0) {
-      final response = await PlatformAPI.platformResponse(
-        command: 'BIND_EMAIL',
-        body: <String, dynamic>{
-          'userId': synthUser.userId,
-          'sessionId': synthUser.sessionId,
-          'email': email,
-        },
-      );
+      final response = await PlatformAPI.platformResponse(<String, dynamic>{
+        'fid': fid,
+        'token': token,
+        'command': 'BIND_EMAIL',
+        'userId': synthUser.userId,
+        'sessionId': synthUser.sessionId,
+        'email': email,
+      });
       if (response.statusCode == 200) {
         String data = response.body;
         var jsonResponse = jsonDecode(data);
@@ -239,15 +236,15 @@ class UserAPI extends PlatformAPI {
     }
   }
 
-  static Future<User?> confirmEmail(String code, User tempUser) async {
-    final response = await PlatformAPI.platformResponse(
-      command: 'CONFIRM_EMAIL',
-      body: <String, dynamic>{
-        'userId': tempUser.userId,
-        'sessionId': tempUser.sessionId,
-        'code': code,
-      },
-    );
+  static Future<dynamic> confirmEmail(String code, User tempUser) async {
+    final response = await PlatformAPI.platformResponse(<String, dynamic>{
+      'fid': fid,
+      'token': token,
+      'command': 'CONFIRM_EMAIL',
+      'userId': tempUser.userId,
+      'sessionId': tempUser.sessionId,
+      'code': code,
+    });
     if (response.statusCode == 200) {
       String data = response.body;
       var jsonResponse = jsonDecode(data);
@@ -262,51 +259,47 @@ class UserAPI extends PlatformAPI {
             state: UserStates.authorized,
             totalSeatsInReserve: 0);
       } else {
-        return null; // jsonResponse['resultCode'];
+        return jsonResponse['resultCode'];
       }
     } else {
       throw Exception('Failed to get CONFIRM_EMAIL response.');
     }
   }
 
-  static Future<int?> getUserInfo(User user) async {
-    final response = await PlatformAPI.platformResponse(
-      command: 'GET_USER_INFO',
-      body: <String, dynamic>{
-        'userId': user.userId,
-        'sessionId': user.sessionId,
-      },
-    );
+  static Future<dynamic> getUserInfo(User user) async {
+    final response = await PlatformAPI.platformResponse(<String, dynamic>{
+      'fid': fid,
+      'token': token,
+      'command': 'GET_USER_INFO',
+      'userId': user.userId,
+      'sessionId': user.sessionId,
+    });
     if (response.statusCode == 200) {
       String data = response.body;
       var jsonResponse = jsonDecode(data);
       print(jsonResponse['command'] +
           ' ' +
           jsonResponse['resultCode'].toString());
-      if (jsonResponse['resultCode'] == 0 &&
-          jsonResponse['reservedSeats'] is int) {
+      if (jsonResponse['resultCode'] == 0) {
         return jsonResponse['reservedSeats'];
       } else {
-        return null;
-        /*
         return jsonResponse['command'] +
             ' ' +
             jsonResponse['resultCode'].toString();
-        */
       }
     } else {
-      throw Exception('Failed to get GET_USER_INFO response.');
+      throw Exception('Failed to get CONFIRM_EMAIL response.');
     }
   }
 
   static Future<String> getUserEmail(User user) async {
-    final response = await PlatformAPI.platformResponse(
-      command: 'GET_EMAIL',
-      body: <String, dynamic>{
-        'userId': user.userId,
-        'sessionId': user.sessionId,
-      },
-    );
+    final response = await PlatformAPI.platformResponse(<String, dynamic>{
+      'fid': fid,
+      'token': token,
+      'command': 'GET_EMAIL',
+      'userId': user.userId,
+      'sessionId': user.sessionId,
+    });
     if (response.statusCode == 200) {
       String data = response.body;
       var jsonResponse = jsonDecode(data);
@@ -330,14 +323,14 @@ class CartAPI extends PlatformAPI {
     List<CartItemWrapper> resultList = [];
     late CartOrder cartOrder;
     late String currency;
-    final response = await PlatformAPI.platformResponse(
-      command: 'GET_CART',
-      body: <String, dynamic>{
-        'rawCoordinates': true,
-        'userId': user.userId,
-        'sessionId': user.sessionId,
-      },
-    );
+    final response = await PlatformAPI.platformResponse(<String, dynamic>{
+      'fid': fid,
+      'token': token,
+      'command': 'GET_CART',
+      'rawCoordinates': true,
+      'userId': user.userId,
+      'sessionId': user.sessionId,
+    });
     if (response.statusCode == 200) {
       String data = response.body;
       var jsonResponse = jsonDecode(data);
@@ -393,11 +386,12 @@ class CartAPI extends PlatformAPI {
 
   static Future<dynamic> createOrder(User user, List<dynamic> reqFields) async {
     Map<String, dynamic> requestBody = {
+      'fid': fid,
+      'token': token,
+      'command': 'CREATE_ORDER',
       'userId': user.userId,
       'sessionId': user.sessionId,
-      // TODO return order information
-      'successUrl':
-          successUrl + '?' + zone, // + guid (and save then to local storage)
+      'successUrl': successUrl + '?' + zone,
       'failUrl': failUrl
     };
     if (reqFields.isNotEmpty) {
@@ -412,10 +406,7 @@ class CartAPI extends PlatformAPI {
         requestBody['visitorDataList'] = list;
       }
     }
-    final response = await PlatformAPI.platformResponse(
-      command: 'CREATE_ORDER',
-      body: requestBody,
-    );
+    final response = await PlatformAPI.platformResponse(requestBody);
     if (response.statusCode == 200) {
       String data = response.body;
       var jsonResponse = jsonDecode(data);
@@ -440,15 +431,15 @@ class CartAPI extends PlatformAPI {
       kdpParam['kdp'] = accessCodeNotifier.value;
     }
 
-    final response = await PlatformAPI.platformResponse(
-      command: 'RESERVATION',
-      body: <String, dynamic>{
-        'type': 'RESERVE',
-        'userId': user.userId,
-        'sessionId': user.sessionId,
-        'categoryList': categoryList,
-      }..addAll(kdpParam),
-    );
+    final response = await PlatformAPI.platformResponse(<String, dynamic>{
+      'fid': fid,
+      'token': token,
+      'command': 'RESERVATION',
+      'type': 'RESERVE',
+      'userId': user.userId,
+      'sessionId': user.sessionId,
+      'categoryList': categoryList,
+    }..addAll(kdpParam));
 
     if (response.statusCode == 200) {
       String data = response.body;
@@ -520,22 +511,26 @@ class CartAPI extends PlatformAPI {
       seat['fanId'] = fanId;
     }
 
-    final response = await PlatformAPI.platformResponse(
-      command: 'RESERVATION',
-      body: command == 'UN_RESERVE_ALL'
-          ? (<String, dynamic>{
-              'type': command,
-              'userId': user.userId,
-              'sessionId': user.sessionId,
-            }..addAll(kdpParam))
-          : <String, dynamic>{
-              'type': command,
-              'seatList': [seat],
-              'userId': user.userId,
-              'sessionId': user.sessionId,
-            }
-        ..addAll(kdpParam),
-    );
+    final response =
+        await PlatformAPI.platformResponse(command == 'UN_RESERVE_ALL'
+            ? (<String, dynamic>{
+                'fid': fid,
+                'token': token,
+                'command': 'RESERVATION',
+                'type': command,
+                'userId': user.userId,
+                'sessionId': user.sessionId,
+              }..addAll(kdpParam))
+            : <String, dynamic>{
+                'fid': fid,
+                'token': token,
+                'command': 'RESERVATION',
+                'type': command,
+                'seatList': [seat],
+                'userId': user.userId,
+                'sessionId': user.sessionId,
+              }
+          ..addAll(kdpParam));
 
     if (response.statusCode == 200) {
       String data = response.body;
@@ -553,14 +548,14 @@ class CartAPI extends PlatformAPI {
   static Future<dynamic> addPromoCodes(
       User user, List<String> promoCodes) async {
     Map<String, dynamic> requestBody = {
+      'fid': fid,
+      'token': token,
+      'command': 'ADD_PROMO_CODES',
       'promoCodeList': promoCodes,
       'userId': user.userId,
       'sessionId': user.sessionId,
     };
-    final response = await PlatformAPI.platformResponse(
-      command: 'ADD_PROMO_CODES',
-      body: requestBody,
-    );
+    final response = await PlatformAPI.platformResponse(requestBody);
     if (response.statusCode == 200) {
       String data = response.body;
       var jsonResponse = jsonDecode(data);

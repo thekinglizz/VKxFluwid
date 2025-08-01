@@ -22,7 +22,7 @@ class ActionRepository{
     late ActionEvent preferredActionEvent;
 
     //выбираем нужный сеанс и его площадку из данных о представлении
-    for (var venue in action.venueList){
+    for (var venue in (action.venueList as List<Venue>)){
       for (ActionEvent ae in venue.actionEventList){
         if (ae.actionEventId == int.parse(actionEventId)){
           preferredActionEvent = ae;
