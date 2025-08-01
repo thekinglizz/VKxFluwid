@@ -90,11 +90,11 @@ class PostMessageService {
         ),
         // TODO -- temporary. Replace with real data
         actionEventPayload: RequestDTOActionEventData(
-          actionCoreId: actionId,
+          actionCoreId: 1234567890,
           actionName: 'actionName',
           actionEventDateStart: DateTime.now(),
           actionEventDateEnd: DateTime.now(),
-          actionEventCoreId: actionEventId,
+          actionEventCoreId: 1234567890,
           ageCategory: 'ageCategory',
           actionCategoryName: 'actionCategoryName',
           venueCoreId: 1234567890,
