@@ -145,11 +145,11 @@ class _FluwidHomeState extends ConsumerState<FluwidHome> {
           return ValueListenableBuilder<int>(
             builder: (BuildContext context, int value, Widget? child) {
               return Scaffold(
-                backgroundColor: const Color(0xfff2f3f5),
+                backgroundColor:  lighten(const Color(0xfff2f3f5), .02),
                 extendBody: true,
                 appBar: value == 0 ? AppBar(
                   shadowColor: Theme.of(context).colorScheme.shadow,
-                  backgroundColor: const Color(0xfff2f3f5),
+                  backgroundColor: lighten(const Color(0xfff2f3f5), .02),
                   surfaceTintColor: MaterialTheme.lightScheme().surfaceContainerLow,
                   toolbarHeight: 80,
                   centerTitle: true,
@@ -445,12 +445,12 @@ class _Header extends ConsumerWidget {
           ),
         ),*/
         if (aEvent.schemeType == SchemeType.mixed) ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 900),
+          constraints: const BoxConstraints(maxWidth: 1100),
           child:  Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: Colors.white,
-                //border:  Border.all(color: MaterialTheme.lightScheme().outlineVariant, width: 1.2),
-                borderRadius: BorderRadius.all(Radius.circular(20)),
+                border: Border.all(color: MaterialTheme.lightScheme().outlineVariant, width: 0.5),
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
               ),
               margin: const EdgeInsets.all(0),
               child: Padding(
@@ -566,15 +566,24 @@ class _MobileHeader extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               spacing: 12,
                               children: [
-                                if (aEvent.schemeType == SchemeType.assignedSeats)
-                                  if (date !="off") Row(
+                                Text(venue.venueName,
+                                  style: customTextStyle(MaterialTheme.lightScheme()
+                                      .onSurfaceVariant, 16, 'Regular'),),
+                                Row(
+                                  spacing: 5,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(CupertinoIcons.calendar, size: 22,
-                                        color: MaterialTheme.lightScheme().onSurface),
-                                    Text(aEvent.date,
+                                    Icon(CupertinoIcons.calendar, size: 16,
+                                        color: MaterialTheme.lightScheme().onSurfaceVariant),
+                                    Text(aEvent.vkDate + ' ' +  aEvent.time,
                                       style: customTextStyle(MaterialTheme.lightScheme()
-                                          .onSurface, 22, 'Regular'),),
+                                          .onSurfaceVariant, 16, 'Regular'),),
+                                    Text("•",
+                                      style: customTextStyle(MaterialTheme.lightScheme()
+                                          .onSurfaceVariant, 16, 'Regular'),),
+                                    Text(actionAge,
+                                      style: customTextStyle(MaterialTheme.lightScheme()
+                                          .error, 16, 'Regular'),),
                                   ],
                                 ),
                                 SizedBox(
@@ -603,10 +612,7 @@ class _MobileHeader extends ConsumerWidget {
                 if (aEvent.categoryLimitList.isNotEmpty) Card(
                     margin: const EdgeInsets.all(0),
                     color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: GeneralAdmissionArea(actionEvent: aEvent,),
-                    )
+                    child: GeneralAdmissionArea(actionEvent: aEvent,)
                 ),
                 const SizedBox(height: 8,),
               ],
@@ -629,7 +635,7 @@ class _Body extends ConsumerWidget {
     //Map<String, List<dynamic>> dateMap = ref.read(asyncActionProvider).value!.actionEventsGroupedByDate;
     //DateTime? selectedDate = ref.read(asyncActionProvider).value!.selectedDate;
     return  SizedBox(
-      width: 900,
+      width: 1100,
       child: Column(
         children: [
           Container(
@@ -677,7 +683,7 @@ class GeneralAdmissionArea extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
+        /*Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             spacing: 8,
@@ -700,7 +706,7 @@ class GeneralAdmissionArea extends ConsumerWidget {
               ),
             ],
           ),
-        ),
+        ),*/
         Container(
           decoration: BoxDecoration(
             color: darken(const Color(0xfff2f3f5)),
@@ -730,7 +736,7 @@ class SchemeArea extends ConsumerWidget {
     return scheme.when(
         data: (data){
           if (scheme.isRefreshing){
-            return SizedBox(width: 900.0,
+            return SizedBox(width: 1100.0,
                 child: Center(child: CircularProgressIndicator(
                   color: MaterialTheme.lightScheme().primary,)));
           }
@@ -822,7 +828,7 @@ class SchemeArea extends ConsumerWidget {
                       bottom: 0,
                       right: 0,
                       child: SizedBox(
-                        width: 900,
+                        width: 1100,
                         height: 86,
                         child: Container(
                           decoration: BoxDecoration(
@@ -931,7 +937,7 @@ class SchemeArea extends ConsumerWidget {
           return const ErrorScreen(error: 'Error');
         },
         loading: (){
-          return SizedBox(width: 900.0, height: 100.0,
+          return SizedBox(width: 1100.0, height: 100.0,
               child: Center(child: CircularProgressIndicator(
                   color:MaterialTheme.lightScheme().primary)));
         });

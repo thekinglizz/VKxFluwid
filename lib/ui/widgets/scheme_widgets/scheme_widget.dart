@@ -145,7 +145,7 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
     _onScreenSectors = widget.sectorList;
     final siWidth = (widget.siData.schemeSize.width * widget.schemeCoef)/2;
     final siHeight = (widget.siData.schemeSize.height * widget.schemeCoef)/2.5;
-    if (screenWidth > 700){_viewTransformationController.value.translate(450-siWidth, 350-siHeight);}
+    if (screenWidth > 700){_viewTransformationController.value.translate(550-siWidth, 320-siHeight);}
     else {_viewTransformationController.value.translate(screenWidth/2-siWidth, (screenHeight*0.7)/2-siHeight);}
     super.initState();
   }
@@ -288,7 +288,7 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
                     _currentZoom = _viewTransformationController
                         .value.getMaxScaleOnAxis();
                     if (screenWidth > 1100) {
-                      x = const Offset(450, 350);
+                      x = const Offset(550, 320);
                     } else {
                       x = Offset(screenWidth / 2, screenWidth / 2);
                     }
@@ -319,7 +319,7 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
                 _currentZoom = _viewTransformationController
                     .value.getMaxScaleOnAxis();
                 if (screenWidth > 1100) {
-                  x = const Offset(450, 350);
+                  x = const Offset(550, 320);
                 } else {
                   x = Offset(screenWidth / 2, screenWidth / 2);
                 }
@@ -353,7 +353,7 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
                 final siHeight = (widget.siData.schemeSize.height * widget.schemeCoef)/2.5;
                 if (screenWidth > 700){
                   _viewTransformationController.value
-                      .translate(450-siWidth, 350-siHeight);
+                      .translate(550-siWidth, 320-siHeight);
                 }
                 else {
                   _viewTransformationController.value
@@ -369,20 +369,3 @@ class _SchemeViewerState extends ConsumerState<SchemeViewer> {
     );
   }
 }
-
-/*
-* if(screenWidth < 700) Positioned(top:20, right: 20, child:  ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: Opacity(
-                  opacity: 0.7,
-                  child: Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade700,
-                      borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-                    ),
-                    child: const Icon(Icons.pinch_outlined, size: 25, color: Colors.white),
-                  ),
-                ),
-              )),*/

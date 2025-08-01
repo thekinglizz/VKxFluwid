@@ -127,9 +127,9 @@ class AssignedSeatsProcessor{
 
       deviceCoef = 0.7;
     } else {
-      width = 900;  //coordinatesList.map((point) => point.x).reduce(max) ; Параметры размера схемы для моб и для десктопа
-      height = 700;  //coordinatesList.map((point) => point.y * screenHeight).reduce(max);
-      deviceCoef = 0.5;
+      width = 1100;  //coordinatesList.map((point) => point.x).reduce(max) ; Параметры размера схемы для моб и для десктопа
+      height = 640;  //coordinatesList.map((point) => point.y * screenHeight).reduce(max);
+      deviceCoef = 0.4;//масштаб схемы
     }
 
     //Размер схемы для устройства в зависимости от ширины его экрана

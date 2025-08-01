@@ -182,7 +182,7 @@ class FluwidBottomSheet extends ConsumerWidget {
                     width: MediaQuery.of(context).size.width,
                     child: FilledButton(
                       style: customRoundedBorderStyle(MaterialTheme.lightScheme().primary),
-                      child: Text(AppLocalizations.of(context)!.goToCartLabel,
+                      child: Text(AppLocalizations.of(context)!.buyLabel,
                           style: customTextStyle(Colors.white, 16.0, 'Regular')),
                       onPressed: () {
                         if (context.mounted){

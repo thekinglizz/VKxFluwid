@@ -39,7 +39,7 @@ class UniversalPainter extends CustomPainter{
       text: TextSpan(
         text: sector.sectorName,
         style: TextStyle(color: const Color(0xff2e4c85),
-            fontSize: screenWidth > 900 ? 10 : 5,
+            fontSize: screenWidth > 900 ? 8 : 5,
             fontFamily: 'RobotoCondensedRegular'),
       ),
       textDirection: TextDirection.ltr,

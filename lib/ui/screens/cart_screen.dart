@@ -174,7 +174,7 @@ class _CartWidgetState extends ConsumerState<CartWidget> {
                         child: SelectableRegion(
                           selectionControls: materialTextSelectionControls,
                           child: Container(
-                            decoration: BoxDecoration(color: MaterialTheme.lightScheme().secondaryContainer,
+                            decoration: BoxDecoration(color: darken(const Color(0xfff2f3f5), 0.07),
                               borderRadius: BorderRadius.circular(20),),
                             margin: EdgeInsets.zero,
                             child: ConstrainedBox(

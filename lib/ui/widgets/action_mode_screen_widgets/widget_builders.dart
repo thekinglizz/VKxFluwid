@@ -57,7 +57,7 @@ Widget buildBodyEventData(ActionEvent actionEvent, BuildContext context, String 
       );
     default:
       return SizedBox(
-        width: 900,
+        width: 1100,
         child: Center(
           child: Text(AppLocalizations.of(context)!.emptyGA,
             style: customTextStyle(MaterialTheme.lightScheme().onSurface, 20, 'Light'), ),
