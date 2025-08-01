@@ -27,6 +27,7 @@ export function getUrl() {
         utm_source: '1234',
         utm_campaign: '1234',
         utm_medium: '1234',
+        utm_term: '1234',
         utm_content: '1234',
     };
 

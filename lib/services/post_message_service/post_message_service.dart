@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:js_interop';
+import 'package:flapp_widget/constants.dart';
 import 'package:flapp_widget/services/api_service/authorization_service.dart';
 import 'package:flapp_widget/services/api_service/dto/request_dto.dart';
 import 'package:flapp_widget/services/post_message_service/dto/post_message_personalized_event.dart';
@@ -84,36 +85,37 @@ class PostMessageService {
         userPayload: RequestDTOUserData(
           providerId: event.extraUser.priorityId,
           providerIdType: event.extraUser.priorityIdType,
-          ipAddress: ipAddress,
-          userAgent: userAgent,
+          ipAddress: 'ipAddress',
+          userAgent: 'userAgent',
         ),
+        // TODO -- temporary. Replace with real data
         actionEventPayload: RequestDTOActionEventData(
-          actionCoreId: actionCoreId,
-          actionName: actionName,
-          actionEventDateStart: actionEventDateStart,
-          actionEventDateEnd: actionEventDateEnd,
-          actionEventCoreId: actionEventCoreId,
-          ageCategory: ageCategory,
-          actionCategoryName: actionCategoryName,
-          venueCoreId: venueCoreId,
-          venueName: venueName,
-          address: address,
-          timeZone: timeZone,
-          hallName: hallName,
-          organizatorName: organizatorName,
-          organizatorAddress: organizatorAddress,
-          organizatorInn: organizatorInn,
+          actionCoreId: actionId,
+          actionName: 'actionName',
+          actionEventDateStart: DateTime.now(),
+          actionEventDateEnd: DateTime.now(),
+          actionEventCoreId: actionEventId,
+          ageCategory: 'ageCategory',
+          actionCategoryName: 'actionCategoryName',
+          venueCoreId: 1234567890,
+          venueName: 'venueName',
+          address: 'address',
+          timeZone: 'timeZone',
+          hallName: 'hallName',
+          organizatorName: 'organizatorName',
+          organizatorAddress: 'organizatorAddress',
+          organizatorInn: 'organizatorInn',
         ),
         widgetPayload: RequestDTOWidgetData(
-          widgetId: widgetId,
-          widgetTitle: widgetTitle,
-          widgetReferer: widgetReferer,
-          widgetUrl: widgetUrl,
-          utmSource: 1,
-          utmMedium: 1,
-          utmCampaign: 1,
-          utmTerm: 1,
-          utmContent: 1,
+          widgetId: 'widgetId',
+          widgetTitle: 'widgetTitle',
+          widgetReferer: 'widgetReferer',
+          widgetUrl: url?.origin ?? '',
+          utmSource: utmSource,
+          utmMedium: utmMedium,
+          utmCampaign: utmCampaign,
+          utmTerm: utmTerm,
+          utmContent: utmContent,
         ),
       );
 

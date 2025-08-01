@@ -18,6 +18,8 @@ enum SchemeType {generalAdmission, assignedSeats, mixed, undefined}
 late FragmentProgram fragmentProgram;
 int actionEventIndex = 0;
 
+Uri? url;
+
 dynamic actionId;
 dynamic actionEventId;
 dynamic cityId;
@@ -50,6 +52,8 @@ dynamic extraPlatform;
 dynamic utmSource;
 dynamic utmCampaign;
 dynamic utmMedium;
+dynamic utmTerm;
+dynamic utmContent;
 
 // Нотифаеры для элементов главного экрана
 final ValueNotifier<ScrollPhysics> physics = ValueNotifier<ScrollPhysics>
